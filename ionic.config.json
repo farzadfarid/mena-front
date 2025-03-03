@@ -1,0 +1,7 @@
+{
+  "name": "mena",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
