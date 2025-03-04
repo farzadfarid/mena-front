@@ -1,0 +1,22 @@
+ion-spinner {
+    width: 100px;
+    height: 100px;
+}
+
+.spinner-container {
+    position: fixed;
+    /* Ensure it stays in place */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Center the element */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(184, 184, 184, 0.8);
+    /* Optional: Add a semi-transparent background */
+    z-index: 9999;
+    /* Make sure it's above other elements */
+}

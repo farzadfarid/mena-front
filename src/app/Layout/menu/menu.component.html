@@ -1,0 +1,97 @@
+<ion-menu contentId="main-content" type="overlay" menuId="main-menu">
+  <ion-content>
+    <ion-list id="inbox-list">
+      <ion-list-header>Inbox</ion-list-header>
+      <!-- <ion-note>ionicframework.com</ion-note>  -->
+
+      <!-- <ion-item>
+        <ion-icon slot="start" [name]="darkMode ? 'moon-outline' : 'sunny-outline'"></ion-icon>
+        <ion-label>Dark Mode</ion-label>
+        <ion-toggle name="darkModeToggle" [(ngModel)]="darkMode" (ionChange)="toggleDarkTheme()"></ion-toggle>
+      </ion-item> -->
+
+      <ion-item>
+        <ion-icon slot="start" [name]="darkMode ? 'moon-outline' : 'sunny-outline'"></ion-icon>
+        <ion-label>Dark Mode</ion-label>
+        <ion-toggle [checked]="darkMode" (ionChange)="toggleDarkTheme($event)"></ion-toggle>
+      </ion-item>
+      
+
+      <ion-menu-toggle auto-hide="false">
+        <ion-item routerDirection="root" routerLink="/inbox" lines="none" detail="false" routerLinkActive="selected">
+          <ion-icon aria-hidden="true" slot="start" ios="mail-outline" md="mail-sharp"></ion-icon>
+          <ion-label>Inbox</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle auto-hide="false">
+        <ion-item routerDirection="root" routerLink="/inbox2" lines="none" detail="false" routerLinkActive="selected">
+          <ion-icon aria-hidden="true" slot="start" ios="mail-outline" md="mail-sharp"></ion-icon>
+          <ion-label>newww</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle auto-hide="false">
+        <ion-item routerDirection="root" routerLink="/favorites" lines="none" detail="false" routerLinkActive="selected">
+          <ion-icon aria-hidden="true" slot="start" ios="heart-outline" md="heart-sharp"></ion-icon>
+          <ion-label>Favorites</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle auto-hide="false">
+        <ion-item routerDirection="root" routerLink="/archived" lines="none" detail="false" routerLinkActive="selected">
+          <ion-icon aria-hidden="true" slot="start" ios="archive-outline" md="archive-sharp"></ion-icon>
+          <ion-label>Archived</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle auto-hide="false">
+        <ion-item routerDirection="root" routerLink="/trash" lines="none" detail="false" routerLinkActive="selected">
+          <ion-icon aria-hidden="true" slot="start" ios="trash-outline" md="trash-sharp"></ion-icon>
+          <ion-label>Trash</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle auto-hide="false">
+        <ion-item routerDirection="root" routerLink="/spam" lines="none" detail="false" routerLinkActive="selected">
+          <ion-icon aria-hidden="true" slot="start" ios="warning-outline" md="warning-sharp"></ion-icon>
+          <ion-label>Spam</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-list>
+
+    <ion-list id="labels-list">
+      <ion-list-header>Labels</ion-list-header>
+
+      <ion-item lines="none">
+        <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
+        <ion-label>Family</ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
+        <ion-label>Friends</ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
+        <ion-label>Notes</ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
+        <ion-label>Work</ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
+        <ion-label>Travel</ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
+        <ion-label>Reminders</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
