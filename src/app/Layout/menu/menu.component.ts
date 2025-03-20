@@ -3,14 +3,15 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   IonMenu, IonContent, IonList, IonListHeader,
-  IonMenuToggle, IonItem, IonIcon, IonLabel, IonToggle
+  IonMenuToggle, IonItem, IonIcon, IonLabel
 } from '@ionic/angular/standalone';
+import { TranslateModule } from '@ngx-translate/core';
 import { addIcons } from 'ionicons';
 import {
   mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp,
   heartOutline, heartSharp, archiveOutline, archiveSharp,
   trashOutline, trashSharp, warningOutline, warningSharp,
-  bookmarkOutline, bookmarkSharp
+  bookmarkOutline, bookmarkSharp, logInOutline, logIn, list, listOutline, listSharp
 } from 'ionicons/icons';
 import { sunnyOutline, moonOutline } from 'ionicons/icons';
 @Component({
@@ -18,7 +19,7 @@ import { sunnyOutline, moonOutline } from 'ionicons/icons';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
   standalone: true,
-  imports: [IonToggle,
+  imports: [
     RouterLink,
     RouterLinkActive,
     IonMenu,
@@ -30,18 +31,14 @@ import { sunnyOutline, moonOutline } from 'ionicons/icons';
     IonIcon,
     IonLabel,
     FormsModule,
+    TranslateModule
   ]
 })
 export class MenuComponent implements OnInit {
   darkMode = false;
 
   constructor() {
-    addIcons({
-      mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp,
-      heartOutline, heartSharp, archiveOutline, archiveSharp,
-      trashOutline, trashSharp, warningOutline, warningSharp,
-      bookmarkOutline, bookmarkSharp, sunnyOutline, moonOutline
-    });
+    addIcons({ listOutline, listSharp, list, logIn, logInOutline, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, sunnyOutline, moonOutline });
   }
 
 
@@ -68,17 +65,12 @@ export class MenuComponent implements OnInit {
     }
   }
 
-  // toggleDarkTheme() {
-  //   this.darkMode = !this.darkMode;
+
+  // toggleDarkTheme(event: any) {
+  //   this.darkMode = event.detail.checked; // Get the toggle's checked state
   //   document.body.classList.toggle('dark', this.darkMode);
   //   localStorage.setItem('darkMode', this.darkMode.toString());
   // }
-
-  toggleDarkTheme(event: any) {
-    this.darkMode = event.detail.checked; // Get the toggle's checked state
-    document.body.classList.toggle('dark', this.darkMode);
-    localStorage.setItem('darkMode', this.darkMode.toString());
-  }
 
 
 

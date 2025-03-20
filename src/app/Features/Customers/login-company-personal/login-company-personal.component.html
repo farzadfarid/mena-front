@@ -1,0 +1,43 @@
+<div class="ionMarginTop"></div>
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <!-- Logo -->
+    <ion-icon name="log-in-outline" class="login-logo"></ion-icon>
+
+    <!-- Title -->
+    <h2 class="login-title">{{ 'SIGN_IN' | translate }}/{{ 'SIGN_UP' | translate }}</h2>
+    <p class="login-subtitle">{{ 'Please log in to continue' | translate }}</p>
+
+    <!-- Login Form -->
+    <ion-list class="login-form">
+      <ion-item>
+        <ion-label position="floating">{{ 'Email' | translate }}</ion-label>
+        <ion-input type="email" [(ngModel)]="email" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">{{ 'Password' | translate }}</ion-label>
+        <ion-input type="password" [(ngModel)]="password" required></ion-input>
+      </ion-item>
+
+      <!-- Forgot Password Link -->
+      <ion-text class="forgot-password" (click)="router.navigate(['/forgot-password'])">
+        {{ 'Forgot Password?' | translate }}
+      </ion-text>
+
+      <!-- Login Button -->
+      <ion-button expand="block" (click)="login()" color="dark" [disabled]="!email || !password">
+        {{ 'SIGN_IN' | translate }}
+      </ion-button>
+
+      <!-- Sign Up Link -->
+      <p class="signup-text" >
+        {{ "Don't have an account? Sign Up as a " | translate }}
+        <a (click)="router.navigate(['/register-company'])"> {{ 'Company' | translate }}</a>
+        or
+        <a (click)="router.navigate(['/register-personal'])"> {{ 'Personal' | translate }}</a>
+
+      </p>
+    </ion-list>
+  </div>
+</ion-content>

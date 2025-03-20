@@ -1,0 +1,18 @@
+<!-- <ion-button id="open-modal" expand="block">Open</ion-button> -->
+    <ion-modal #modal trigger="open-modal" [canDismiss]="canDismiss" [presentingElement]="page">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>{{title}}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="modal.dismiss()">{{ "close"  | translate }}</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <p>
+            {{ content }}
+          </p>
+        </ion-content>
+      </ng-template>
+    </ion-modal>

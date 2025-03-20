@@ -1,0 +1,45 @@
+<div class="ionMarginTop"></div>
+<ion-content class="ion-padding">
+  <div class="dashboard-container">
+    <ion-card (click)="navigateTo('/users')">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="people" class="dashboard-icon"></ion-icon>
+          Users
+        </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+    <ion-card (click)="navigateTo('/specialists')">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="construct" class="dashboard-icon"></ion-icon>
+          Specialists
+        </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+    <ion-card (click)="navigateTo('/bookings')">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="calendar" class="dashboard-icon"></ion-icon>
+          Bookings
+        </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+    <ion-card (click)="navigateTo('/companies')">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="business" class="dashboard-icon"></ion-icon>
+          Companies
+        </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+    <ion-card (click)="navigateTo('/settings')">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="settings" class="dashboard-icon"></ion-icon>
+          Settings
+        </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </div>
+</ion-content>

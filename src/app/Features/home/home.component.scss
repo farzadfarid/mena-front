@@ -1,0 +1,96 @@
+.main {
+    --background: none !important;
+    /* Override Ionic's default background */
+    margin: 0 !important;
+    height: 100vh !important;
+
+    background: linear-gradient(135deg, #C6FF00, #009CFF) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+
+    /* Adding Glassmorphism Blur Effect */
+    position: relative !important;
+    overflow: hidden !important;
+
+}
+
+.main::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+
+    background: inherit !important;
+    /* Keep the same gradient */
+    filter: blur(25px) !important;
+    /* Apply the blur effect */
+    -webkit-filter: blur(25px) !important;
+    /* Safari Support */
+    z-index: -1 !important;
+    /* Push it behind the content */
+}
+
+.main * {
+    position: relative !important;
+    z-index: 1 !important;
+    /* Ensure content stays on top */
+}
+
+
+
+
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.logo {
+    max-width: 250px;
+    height: auto;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.custom-button {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Make buttons responsive */
+@media (min-width: 768px) {
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .custom-button {
+        width: 60%;
+        max-width: 300px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .custom-button {
+        width: 50%;
+        max-width: 280px;
+    }
+}

@@ -37,9 +37,11 @@
 @import '@ionic/angular/css/palettes/dark.system.css';
 
 
+
 :root {
     /* Light mode variables */
-    --ion-color-primary: #3880ff;
+    --ion-color-primary: #009cff;
+
     --ion-background-color: #ffffff;
     --ion-text-color: #000000;
     /* Add other light mode variables as needed */
@@ -47,7 +49,7 @@
 
 .dark {
     /* Dark mode variables */
-    --ion-color-primary: #428cff;
+    --ion-color-primary: #c6ff00;
     --ion-background-color: #121212;
     --ion-background-color-rgb: 18, 18, 18;
     --ion-text-color: #ffffff;
@@ -79,4 +81,19 @@
     --ion-toolbar-background: #1f1f1f;
     --ion-tab-bar-background: #1f1f1f;
     --ion-card-background: #1e1e1e;
+}
+
+.ionMarginTop {
+    margin-top: 50px !important;
+}
+
+.custom-modal {
+    --width: 90%;
+    --max-width: 400px;
+    --height: auto;
+    --max-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }

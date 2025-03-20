@@ -1,0 +1,99 @@
+
+<div class="ionMarginTop"></div>
+<ion-content class="ion-padding">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="profile-container">
+      <ion-avatar class="profile-avatar">
+        <img *ngIf="logoImage; else defaultAvatar" [src]="logoImage" />
+      </ion-avatar>
+      <ng-template #defaultAvatar>
+        <ion-icon name="person-circle" class="default-avatar"></ion-icon>
+      </ng-template>
+      <ion-button expand="full" (click)="uploadImage()">{{ "Select Logo"  | translate }}</ion-button>
+    </div>
+    <ion-grid style="margin-bottom: 50px;">
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label position="floating">{{ "Company Name"  | translate }}</ion-label>
+            <ion-input type="text" formControlName="companyName"></ion-input>
+          </ion-item>
+        </ion-col>
+    
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label position="floating">{{ "Phone Number"  | translate }}</ion-label>
+            <ion-input type="tel" formControlName="phone"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label position="floating">{{ "Email"  | translate }}</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" size-md="6" style="padding-top: 10px;">
+          <ion-item >
+            <ion-label position="start">{{ "InformationCard"  | translate }}</ion-label>
+            <ion-button expand="block" color="warning" fill="clear" (click)="openBankCardModal()">{{ "Add a bank card"  | translate }}</ion-button>
+          </ion-item>
+        </ion-col>
+    
+      </ion-row>
+    
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">{{ "Address"  | translate }}</ion-label> 
+            <ion-input type="text" formControlName="address"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">{{ "Summary"  | translate }}</ion-label>
+            <ion-textarea (mousedown)="presentModal()" formControlName="summary"></ion-textarea>
+          </ion-item>
+          <app-modal #modal [title]="title" [content]="content"></app-modal>
+        </ion-col>
+      </ion-row>
+    
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label position="floating">{{ "Password"  | translate }}</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+        </ion-col>
+    
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label position="floating">{{ "Confirm New Password"  | translate }}</ion-label>
+            <ion-input type="password" formControlName="confirmPassword"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-item lines="none">
+            <ion-button fill="clear" expand="block" color="danger" (click)="presentRule()">{{ "policySpecialist"  | translate }}</ion-button>
+            <app-modal #modalRule [title]="ruleTitle" [content]="ruleContent"></app-modal>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    
+      <ion-row>
+        <ion-col size="12" class="ion-text-center">
+          <ion-button expand="block" type="submit" color="dark" [disabled]="!registerForm.valid">{{ "Register"  | translate }}</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

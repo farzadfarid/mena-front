@@ -1,0 +1,47 @@
+<div class="ionMarginTop"></div>
+<ion-content class="ion-padding">
+<!-- Title Text -->
+<h2 class="title-text">{{ 'SIGN_IN' | translate }}/{{ 'SIGN_UP' | translate }}</h2>
+<ion-radio-group [(ngModel)]="selectedType">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <!-- Company Option -->
+      <ion-col size="4" size-md="4">
+        <div class="option-box" [class.selected]="selectedType === 'company'" (click)="selectedType = 'company'">
+          <ion-icon name="business-outline" class="option-icon"></ion-icon>
+          <ion-label class="option-label">{{ 'Company' | translate }}</ion-label>
+          <ion-radio  value="company"></ion-radio>
+        </div>
+      </ion-col>
+
+      <!-- Personal Option -->
+      <ion-col size="4" size-md="4">
+        <div class="option-box" [class.selected]="selectedType === 'personal'" (click)="selectedType = 'personal'">
+          <ion-icon name="person-outline" class="option-icon"></ion-icon>
+          <ion-label class="option-label">{{ 'Personal' | translate }}</ion-label>
+          <ion-radio value="personal"></ion-radio>
+        </div>
+      </ion-col>
+      <ion-col size="4" size-md="4">
+        <div class="option-box" [class.selected]="selectedType === 'specialist'" (click)="selectedType = 'specialist'">
+          <ion-icon name="person-outline" class="option-icon"></ion-icon>
+          <ion-label class="option-label">{{ 'Specialist' | translate }}</ion-label>
+          <ion-radio value="specialist"></ion-radio>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-radio-group>
+
+<!-- Navigation Button -->
+<ion-grid>
+  <ion-row class="ion-justify-content-center">
+    <!-- Company Option -->
+    <ion-col size="12" size-md="12">
+<ion-button expand="block" color="dark" [disabled]="!selectedType" (click)="navigateToRegister()">
+  {{ 'Continue' | translate }}
+</ion-button>
+</ion-col>
+</ion-row>
+</ion-grid>
+</ion-content>

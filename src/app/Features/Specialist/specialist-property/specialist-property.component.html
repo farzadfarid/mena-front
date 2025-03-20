@@ -1,0 +1,67 @@
+<div class="ionMarginTop"></div>
+<ion-content class="ion-padding">
+  <!-- Specialist Card -->
+  <ion-card>
+    <ion-card-header class="card-header">
+      <ion-card-title class="card-title"> {{ "Your Card Status"  | translate }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="card-content">
+      <!-- Left Side: specialist Details -->
+      <div class="specialist-details">
+        <p><strong>{{ "FullName"  | translate }}:</strong> {{ specialist.name }}</p>
+        <p><strong>{{ "Specialist"  | translate }}:</strong> {{ specialist.role }}</p>
+        <p><strong>{{ "Your Card Status"  | translate }}:</strong> {{ specialist.cardStatus }}</p>
+        <p><strong>{{ "Your Card Status"  | translate }}Issuance Date:</strong> {{ specialist.cardDate | date:'yyyy/MM/dd' }}</p>
+      </div>
+
+      <!-- Right Side: Large User Icon -->
+      <ion-icon name="person-circle-outline" class="large-user-icon"></ion-icon>
+    </ion-card-content>
+  </ion-card>
+
+
+
+  <!-- Clothing Size Selection Form -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ "Select Clothing Sizes"  | translate }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="sizesForm" (ngSubmit)="submitSizes()">
+        <ion-item>
+          <ion-label>{{ "Shoe Size"  | translate }}</ion-label>
+          <ion-select formControlName="shoeSize">
+            <ion-select-option value="small">{{ "Small"  | translate }}</ion-select-option>
+            <ion-select-option value="medium">{{ "Medium"  | translate }}</ion-select-option>
+            <ion-select-option value="large">{{ "Large"  | translate }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>{{ "Pants Size"  | translate }}</ion-label>
+          <ion-select formControlName="pantSize">
+            <ion-select-option value="small">{{ "Small"  | translate }}</ion-select-option>
+            <ion-select-option value="medium">{{ "Medium"  | translate }}</ion-select-option>
+            <ion-select-option value="large">{{ "Large"  | translate }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>{{ "T-Shirt Size"  | translate }}</ion-label>
+          <ion-select formControlName="tshirtSize">
+            <ion-select-option value="small">{{ "Small"  | translate }}</ion-select-option>
+            <ion-select-option value="medium">{{ "Medium"  | translate }}</ion-select-option>
+            <ion-select-option value="large">{{ "Large"  | translate }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-button fill="clear" expand="block" color="danger" (click)="presentRule()">{{ "policySpecialist"  | translate }}</ion-button>
+          <app-modal #modalRule [title]="ruleTitle" [content]="ruleContent"></app-modal>
+        </ion-item>
+        
+        <ion-button expand="full" type="submit" color="primary">{{ "Submit Sizes"  | translate }}</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

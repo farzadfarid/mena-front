@@ -1,0 +1,89 @@
+
+<div class="ionMarginTop"></div>
+<div class="ionMarginTop"></div>
+<ion-content class="ion-padding">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+    <ion-grid style="margin-bottom: 50px;">
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label position="floating">{{ "First Name"  | translate }}</ion-label>
+            <ion-input type="text" formControlName="firstName"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label position="floating">{{ "Last Name"  | translate }}</ion-label>
+            <ion-input type="text" formControlName="lastName"></ion-input>
+          </ion-item>
+        </ion-col>
+       
+      </ion-row>
+    
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label position="floating">{{ "Phone Number"  | translate }}</ion-label>
+            <ion-input type="tel" formControlName="phone"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label position="floating">{{ "Email"  | translate }}</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
+          </ion-item>
+        </ion-col>
+       
+    
+      </ion-row>
+    <ion-row>
+      <ion-col size="12" style="padding-top: 10px;">
+        <ion-item >
+          <ion-label position="start">{{ "InformationCard"  | translate }}</ion-label>
+          <ion-button expand="block" color="warning" fill="clear" (click)="openBankCardModal()">{{ "Add a bank card"  | translate }}</ion-button>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label position="floating">{{ "Address"  | translate }}</ion-label>
+          <ion-input type="text" formControlName="address"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label position="floating">{{ "Password"  | translate }}</ion-label>
+          <ion-input type="password" formControlName="password"></ion-input>
+        </ion-item>
+      </ion-col>
+  
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label position="floating">{{ "Confirm New Password"  | translate }}</ion-label>
+          <ion-input type="password" formControlName="confirmPassword"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-item lines="none">
+          <ion-button fill="clear" expand="block" color="danger" (click)="presentRule()">{{ "policySpecialist"  | translate }}</ion-button>
+          <app-modal #modalRule [title]="ruleTitle" [content]="ruleContent"></app-modal>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    
+      <ion-row>
+        <ion-col size="12" class="ion-text-center">
+          <ion-button expand="block" type="submit" color="dark" [disabled]="!registerForm.valid">Register</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

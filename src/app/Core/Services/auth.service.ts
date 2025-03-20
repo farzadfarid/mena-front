@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { ApiResponse } from '../Response/ApiResponse';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.development';
 import { UserRegisterDto } from '../Models/User/UserRegisterDto.model';
 import { UserLoginDto } from '../Models/User/UserLoginDto.model';
 

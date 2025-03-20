@@ -1,0 +1,38 @@
+.dashboard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    padding: 16px;
+}
+
+ion-card {
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+ion-card:hover {
+    transform: scale(1.05);
+}
+
+.dashboard-icon {
+    font-size: 2rem;
+    color: var(--ion-color-primary);
+    margin-right: 8px;
+}
+
+.header-icon {
+    font-size: 1.5rem;
+    margin-right: 8px;
+}
+
+ion-card-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}

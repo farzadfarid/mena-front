@@ -1,0 +1,48 @@
+@if(isLoading){
+  <app-loading></app-loading>
+}
+<div class="ionMarginTop"></div>
+<ion-content class="ion-padding">
+
+  <div style="text-align: center;">
+    <h2 class="page-title">{{ "Service Appointment"  | translate }}</h2> 
+    <p class="page-description">
+      {{ "Select a construction service and preferred time to view available specialists"  | translate }}
+    </p>
+  </div>
+  
+  <app-search-specialists (searchEvent)="onSearch($event)"></app-search-specialists>
+
+
+
+
+  <div class="card-container">
+    <ion-card *ngFor="let specialist of filteredSpecialists" class="specialist-card" (click)="viewSpecialist(specialist.id)">
+      <div class="image-container">
+        <img [src]="specialist.image" alt="Specialist Image" class="specialist-image" />
+    
+        <!-- نمایش سرویس‌ها روی تصویر در پایین سمت راست -->
+        <div class="badge-container">
+          <ion-badge *ngFor="let service of services" color="warning" class="badge-item">
+            {{ service }}
+          </ion-badge>
+        </div>
+      </div>
+    
+      <ion-card-header>
+        <ion-card-title>{{ specialist.fullName }}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+    
+    
+  </div>
+
+  @if(filteredSpecialists.length != 0){
+    <div class="pagination-controls">
+      <ion-button fill="outline" color="primary" (click)="prevPage()" [disabled]="currentPage === 1">{{ "Prev"  | translate }}</ion-button>
+      <span>{{ "Page"  | translate }} {{ currentPage }}</span>
+      <ion-button fill="outline" color="primary" (click)="nextPage()" [disabled]="currentPage * specialistsPerPage >= specialists.length">{{ "Next"  | translate }}</ion-button>
+    </div>
+}
+</ion-content>
+ 

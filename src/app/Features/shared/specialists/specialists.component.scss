@@ -1,0 +1,115 @@
+html,
+body,
+ion-content {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 0px;
+    padding: 16px;
+}
+
+.specialist-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.specialist-card:hover {
+    transform: scale(1.05);
+}
+
+
+
+ion-card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+    gap: 10px;
+}
+
+.pagination-controls ion-button {
+    min-width: 80px;
+}
+
+
+
+
+
+@media (max-width: 600px) {
+    .card-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100vw !important;
+    }
+
+    .specialist-card {
+        width: 100vw !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+    }
+
+    .specialist-image {
+        width: 100vw !important;
+        border-radius: 0 !important;
+        display: block !important;
+    }
+}
+
+.ion-padding {
+    --padding-start: 0px !important;
+}
+
+
+
+
+
+.image-container {
+    position: relative;
+    width: 100%;
+}
+
+.specialist-image {
+    width: 100%;
+
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.badge-container {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* چینش آیتم‌ها در راست‌ترین نقطه */
+    gap: 5px;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.3);
+    /* بک‌گراند نیمه‌شفاف برای خوانایی بهتر */
+    border-radius: 8px;
+}
+
+/* استایل هر سرویس */
+.badge-item {
+    font-size: 12px;
+    padding: 4px 8px;
+    white-space: nowrap;
+    /* جلوگیری از شکست متن */
+}

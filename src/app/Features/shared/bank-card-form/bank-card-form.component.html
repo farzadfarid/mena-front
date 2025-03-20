@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="font-size: medium;">{{ "Identity Verification by Card"  | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <p style="margin-bottom: 10px;">{{ "Please enter your card details."  | translate }}</p>
+      
+      <form (submit)="submitForm()">
+        <ion-item>
+          <ion-label position="floating">{{ "Cardholder Name"  | translate }}</ion-label>
+          <ion-input type="text" [(ngModel)]="cardData.cardholderName" name="cardholderName" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">{{ "Card Number"  | translate }}</ion-label>
+          <ion-input type="text" [(ngModel)]="cardData.cardNumber" name="cardNumber" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>{{ "Expiration Date"  | translate }}</ion-label>
+          <ion-select [(ngModel)]="cardData.expiryMonth" name="expiryMonth" interface="popover" placeholder="Month">
+            <ion-select-option *ngFor="let month of months" [value]="month">{{ month }}</ion-select-option>
+          </ion-select>
+
+          <ion-select [(ngModel)]="cardData.expiryYear" name="expiryYear" interface="popover" placeholder="Year">
+            <ion-select-option *ngFor="let year of years" [value]="year">{{ year }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">{{ "CVV Code"  | translate }}</ion-label>
+          <ion-input type="text" [(ngModel)]="cardData.cvv" name="cvv" required></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" color="dark" type="submit">{{ "Confirm"  | translate }}</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

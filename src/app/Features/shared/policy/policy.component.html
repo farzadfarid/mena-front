@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="font-size: medium;">{{ title  | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <p style="margin-bottom: 10px;">{{ title }}</p>
+      
+      <form (submit)="submitForm()">
+        <ion-item>
+          {{content}}
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="start">{{ "I agree to the Terms of Service and Privacy Policy"  | translate }}</ion-label>
+           <ion-checkbox slot="start" name="isAgree" [(ngModel)]="isAgree"></ion-checkbox>
+        </ion-item>
+
+        <ion-button expand="block" color="dark" type="submit">{{ "I Agree"  | translate }}</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
