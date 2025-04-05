@@ -1,0 +1,38 @@
+
+<div class="ionMarginTop"></div>
+@if(isLoading){
+  <app-loading></app-loading>
+  }
+ 
+
+  
+  <ion-content class="ion-padding"> 
+    <div class="calendar-wrapper">
+      
+      <div class="containerOffDays">
+        <ion-item lines="none">
+          <ion-label>  {{ "Mark All Weekend?" | translate }}</ion-label>
+          <ion-toggle slot="end" (ionChange)="toggleWeekends($event)"></ion-toggle>
+        </ion-item>
+      </div>
+  
+      <div class="calendar-container">
+        <ion-datetime
+          #calendar
+          id="off-days-calendar"
+          [multiple]="true"
+          presentation="date"
+          [value]="selectedDates"
+          (ionChange)="onDateChange($event)">
+        </ion-datetime>
+      </div>
+  
+      <div class="ionButtonWrapper">
+        <ion-button  color="dark" class="ionButton" (click)="submit()">
+          {{ "Submit" | translate }} 
+        </ion-button>
+      </div>
+  
+    </div>
+  </ion-content>
+  

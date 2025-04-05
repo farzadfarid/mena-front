@@ -1,12 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IonSplitPane, IonRouterOutlet, IonTabs, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MenuComponent } from '../menu/menu.component';
-import {
-  IonIcon,
-  IonTabBar,
-  IonTabButton,
-  IonLabel, IonHeader, IonButtons, IonMenuButton, IonBackButton, IonButton, IonSelect, IonSelectOption
-} from '@ionic/angular/standalone';
+
+
 import {
   homeOutline,
   searchOutline,
@@ -14,7 +9,7 @@ import {
   settingsOutline, playCircle, radio, library,
   search, arrowBack
 } from 'ionicons/icons';
-import { NavController } from '@ionic/angular';
+
 import { addIcons } from 'ionicons';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, Subscription } from 'rxjs';
@@ -22,29 +17,38 @@ import { Title } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LoadingComponent } from "../../Core/loading/loading.component";
+import { Platform } from '@ionic/angular';
+import { App } from '@capacitor/app';
+import { Location } from '@angular/common';
+import { IonSplitPane, IonHeader, IonToolbar, IonMenuButton, IonButtons, IonTitle, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from "@ionic/angular/standalone";
+import { MenuController } from '@ionic/angular';
 @Component({
   selector: 'app-main-layout',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
   standalone: true,
-  imports: [IonToolbar, IonTabs, IonSplitPane, IonTabs, IonButtons, IonSelect, IonSelectOption, FormsModule, IonButton, IonMenuButton, IonTitle,
-    IonRouterOutlet,
-    MenuComponent, IonLabel,
-    IonTabBar, IonTabButton, IonIcon, IonToolbar, IonHeader, TranslateModule, LoadingComponent]
+  imports: [IonLabel, IonIcon, IonTabButton, IonTabBar, IonTabs, IonMenuButton, IonRouterOutlet, IonTitle, IonButtons, IonToolbar, IonHeader, IonSplitPane, FormsModule,
+    MenuComponent, TranslateModule, LoadingComponent]
 })
 export class MainComponent implements OnInit, OnDestroy {
   selectedLanguage = 'sv';
   pageTitle: string = '';
   isLoading = false;
-  private langChangeSub!: Subscription; // متغیری برای ذخیره Subscription
-
+  darkMode = false;
+  private langChangeSub!: Subscription;
   constructor(
+    private cdr: ChangeDetectorRef,
     private translate: TranslateService,
-    private navController: NavController,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    public titleService: Title
+    public titleService: Title,
+    private platform: Platform, private location: Location,
+    private menuCtrl: MenuController
   ) {
+
+    this.initializeApp();
+
+
     // دریافت عنوان صفحه و ترجمه آن هنگام بارگذاری
     this.router.events
       .pipe(
@@ -65,7 +69,7 @@ export class MainComponent implements OnInit, OnDestroy {
       )
       .subscribe((title: string) => {
         if (title) {
-          this.translate.get(title).subscribe(translatedTitle => {
+          this.translate.get(title).subscribe((translatedTitle: string) => {
             this.pageTitle = translatedTitle;
             this.titleService.setTitle(translatedTitle);
           });
@@ -88,16 +92,36 @@ export class MainComponent implements OnInit, OnDestroy {
     });
   }
 
-  changeLanguage(event: any) {
-    const lang = event.detail.value;
-    this.isLoading = true;
-    setTimeout(() => { this.isLoading = false; }, 1000);
-    this.translate.use(lang);
-    this.selectedLanguage = lang;
-    localStorage.setItem('selectedLanguage', lang);
-    document.documentElement.lang = lang;
-    console.log('Language changed to:', lang);
+  ngOnInit() {
+    this.menuCtrl.enable(true, 'main-menu');
+    setTimeout(() => {
+      this.menuCtrl.open('main-menu');
+    }, 1500);
+    this.initializeDarkTheme();
   }
+
+  async initializeDarkTheme() {
+    try {
+      const prefersDark = localStorage.getItem('darkMode');
+
+      if (prefersDark === 'true') {
+        this.darkMode = true;
+        document.body.classList.add('dark');
+      } else if (prefersDark === null) {
+        const prefersDarkMedia = window.matchMedia('(prefers-color-scheme: dark)');
+        if (prefersDarkMedia.matches) {
+          this.darkMode = true;
+          document.body.classList.add('dark');
+        }
+      }
+    } catch (error) {
+      console.error("Error initializing dark theme:", error);
+    } finally {
+      this.cdr.detectChanges(); // Force change detection after localStorage access
+    }
+  }
+
+
 
   private updatePageTitle() {
     let child = this.activatedRoute.firstChild;
@@ -105,7 +129,7 @@ export class MainComponent implements OnInit, OnDestroy {
       if (child.firstChild) {
         child = child.firstChild;
       } else if (child.snapshot.data && child.snapshot.data['title']) {
-        this.translate.get(child.snapshot.data['title']).subscribe(translatedTitle => {
+        this.translate.get(child.snapshot.data['title']).subscribe((translatedTitle: string) => {
           this.pageTitle = translatedTitle;
           this.titleService.setTitle(translatedTitle);
         });
@@ -116,16 +140,26 @@ export class MainComponent implements OnInit, OnDestroy {
     }
   }
 
-  goBack() {
-    this.navController.back();
+  initializeApp() {
+    this.platform.ready().then(() => {
+      App.addListener('backButton', ({ canGoBack }) => {
+        if (canGoBack) {
+          this.location.back(); // صفحه به عقب برمی‌گردد
+        } else {
+          App.exitApp(); // خروج از برنامه اگر دیگه صفحه‌ای برای برگشت نباشه
+        }
+      });
+    });
   }
+
+
   homePage() {
     this.router.navigateByUrl('/home');
   }
   goSettingPage() {
     this.router.navigateByUrl('/settings');
   }
-  ngOnInit() { }
+
 
   ngOnDestroy() {
     if (this.langChangeSub) {

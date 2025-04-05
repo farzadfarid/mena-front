@@ -1,48 +1,76 @@
 @if(isLoading){
   <app-loading></app-loading>
 }
-<div class="ionMarginTop"></div>
-<ion-content class="ion-padding">
 
-  <div style="text-align: center;">
-    <h2 class="page-title">{{ "Service Appointment"  | translate }}</h2> 
-    <p class="page-description">
-      {{ "Select a construction service and preferred time to view available specialists"  | translate }}
-    </p>
-  </div>
+<ion-content  [ngStyle]="{'--padding-top': searchHeight + 'px'}"  fullscreen="true">
+
   
-  <app-search-specialists (searchEvent)="onSearch($event)"></app-search-specialists>
-
-
-
-
-  <div class="card-container">
-    <ion-card *ngFor="let specialist of filteredSpecialists" class="specialist-card" (click)="viewSpecialist(specialist.id)">
-      <div class="image-container">
-        <img [src]="specialist.image" alt="Specialist Image" class="specialist-image" />
+  <div class="search-and-toggle-container" >
+    <app-search-specialists (searchHeightChange)="updateSearchHeight($event)"  (searchEvent)="onSearch($event)"></app-search-specialists>
     
-        <!-- نمایش سرویس‌ها روی تصویر در پایین سمت راست -->
+    <div class="view-toggle" *ngIf="getCurrentPageSpecialists().length != 0">
+      <ion-button fill="clear" [ngClass]="{'active': viewMode === 'list'}" (click)="viewMode = 'list'" class="view-button">
+        <ion-icon name="list-outline" size="small"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" [ngClass]="{'active': viewMode === 'grid'}" (click)="viewMode = 'grid'" class="view-button">
+        <ion-icon name="grid-outline" size="small"></ion-icon>
+      </ion-button>
+      
+    </div>
+  </div>
+
+  @if(getCurrentPageSpecialists().length != 0){
+  <!-- Grid View -->
+  <div class="card-container" *ngIf="viewMode === 'grid'" [ngClass]="{'single-item': getCurrentPageSpecialists().length === 1}">
+    <ion-card *ngFor="let specialist of getCurrentPageSpecialists()" class="specialist-card" (click)="viewSpecialist(specialist.id)">
+      <div class="image-container">
+        <img [src]="specialist.avatar" alt="Specialist Image" class="specialist-image" />
         <div class="badge-container">
-          <ion-badge *ngFor="let service of services" color="warning" class="badge-item">
-            {{ service }}
+          <ion-badge *ngFor="let skill of specialist.skills" color="warning" class="badge-item-small">
+            {{ getLocalizedSkillName(skill) }}
           </ion-badge>
         </div>
       </div>
-    
       <ion-card-header>
-        <ion-card-title>{{ specialist.fullName }}</ion-card-title>
+        <ion-card-title>{{ specialist.firstName }}  {{specialist.lastName}}</ion-card-title>
       </ion-card-header>
     </ion-card>
-    
-    
   </div>
 
-  @if(filteredSpecialists.length != 0){
-    <div class="pagination-controls">
-      <ion-button fill="outline" color="primary" (click)="prevPage()" [disabled]="currentPage === 1">{{ "Prev"  | translate }}</ion-button>
-      <span>{{ "Page"  | translate }} {{ currentPage }}</span>
-      <ion-button fill="outline" color="primary" (click)="nextPage()" [disabled]="currentPage * specialistsPerPage >= specialists.length">{{ "Next"  | translate }}</ion-button>
-    </div>
+  <!-- List View -->
+  <div class="list-container" *ngIf="viewMode === 'list'">
+    <ion-list>
+      <ion-item *ngFor="let specialist of getCurrentPageSpecialists()" (click)="viewSpecialist(specialist.id)" class="specialist-list-item">
+        <ion-thumbnail slot="start">
+          <img [src]="specialist.avatar" alt="Specialist Image" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ specialist.firstName }}  {{specialist.lastName}}</h2>
+          <div class="list-badges">
+            <ion-badge *ngFor="let skill of specialist.skills" color="warning" class="badge-item-small">
+              {{ getLocalizedSkillName(skill) }}
+            </ion-badge>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+ }
+
+@if(showNoFoundMessage){
+  <div class="list-container" style="margin-left: 10px;">
+  <div class="no-results">
+    <ion-icon name="search-outline" class="no-results-icon"></ion-icon>
+    <span style="margin-left:10px ;">{{ "No results found" | translate }}</span>
+  </div>
+</div>
 }
+
+  @if(getCurrentPageSpecialists().length != 0){
+    <div class="pagination-controls">
+      <ion-button fill="outline" color="primary" (click)="prevPage()" [disabled]="currentPage === 1">{{ "Prev" | translate }}</ion-button>
+      <span>{{ "Page" | translate }} {{ currentPage }}</span>
+      <ion-button fill="outline" color="primary" (click)="nextPage()" [disabled]="currentPage * specialistsPerPage >= specialists.length">{{ "Next" | translate }}</ion-button>
+    </div>
+  }
 </ion-content>
- 

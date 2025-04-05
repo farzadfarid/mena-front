@@ -3,8 +3,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { ApiResponse } from '../Response/ApiResponse';
 import { environment } from 'src/environments/environment.development';
-import { UserRegisterDto } from '../Models/User/UserRegisterDto.model';
 import { UserLoginDto } from '../Models/User/UserLoginDto.model';
+import { userRealRegisterModel } from '../Models/User/realUser.model';
+import { jwtDecode } from 'jwt-decode';
+import { DecodedToken } from '../Interfaces/DecodedToken';
 
 
 
@@ -13,37 +15,52 @@ import { UserLoginDto } from '../Models/User/UserLoginDto.model';
 })
 export class AuthService {
 
-  private baseUrl = environment.url + 'User';
-
+  private baseUrl = environment.url;
   constructor(private http: HttpClient) { }
+  extractAndStoreUserInfoFromToken(token: string): void {
+    try {
+      const decoded = jwtDecode<DecodedToken>(token);
 
-  register(user: UserRegisterDto): Observable<ApiResponse<UserRegisterDto>> {
-    return this.http.post<ApiResponse<UserRegisterDto>>(`${this.baseUrl}/register`, user);
+      const userInfo = {
+        name: decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+        email: decoded["Email"],
+        phoneNumber: decoded["PhoneNumber"],
+        userId: decoded["UserId"],
+        role: decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+      };
+
+      // ذخیره در localStorage
+      localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    } catch (error) {
+      console.error("Invalid token", error);
+    }
   }
 
-  login(user: UserLoginDto): Observable<ApiResponse<UserLoginDto>> {
+  userRealRegister(user: userRealRegisterModel): Observable<ApiResponse<userRealRegisterModel>> {
     const headers = new HttpHeaders({
-      'Accept': '*/*',
-      'Authorization':
-        'Access-Control-Allow-Origin',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-      'Access-Control-Allow-Headers': 'origin,X-Requested-With,content-type,accept',
-      'Access-Control-Allow-Credentials': 'true'
+      'Content-Type': 'application/json',
+      'Accept': '*/*'
+    });
+
+    return this.http.post<ApiResponse<userRealRegisterModel>>(`${this.baseUrl}Customer/real`, user, { headers });
+  }
+
+  login(user: UserLoginDto): Observable<ApiResponse<string>> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': '*/*'
     })
-    return this.http.post<ApiResponse<UserLoginDto>>(this.baseUrl + "/login", user, { headers }).pipe(
+    return this.http.post<ApiResponse<string>>(this.baseUrl + "Identity/login", user, { headers }).pipe(
 
       tap(response => {
-        this.setToken(response.token!);
-        if (response.data) {
-          this.setUser(response.data);
-          this.setRole(response.roleName!);
-          this.setUserId(response.data.id)
+        const token = response.data; // ✅ اینجا توکن رو از data بگیر
+        if (token) {
+          this.setToken(token);
+          this.extractAndStoreUserInfoFromToken(token);
+          this.setUser(token); // اگه نیاز باشه
         }
-
-      }));
+      }))
   }
-
-
 
 
   public isAuthenticatedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isAuthenticatedUser());
@@ -80,8 +97,9 @@ export class AuthService {
     return role == '"admin"';
   }
 
-  getToken(): any {
-    return localStorage.getItem('token');
+  getToken(): string | null {
+    const token = localStorage.getItem('token');
+    return token ? token : null;
   }
 
   setToken(token: string): void {
@@ -111,6 +129,7 @@ export class AuthService {
     localStorage.removeItem('user');
     localStorage.removeItem('role');
     localStorage.removeItem('id');
+    localStorage.removeItem('userInfo')
   }
 
   isAuthenticatedUser(): boolean {

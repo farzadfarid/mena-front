@@ -1,0 +1,122 @@
+ion-datetime::part(calendar-day):focus {
+  background-color: rgb(154 209 98 / 0.2);
+  box-shadow: 0px 0px 0px 4px rgb(154 209 98 / 0.2);
+}
+
+ion-datetime.md::part(calendar-day active),
+ion-datetime.md::part(calendar-day active):focus {
+  background-color: #ff0000;
+  border-color: #c53e15;
+  color: #fff;
+}
+
+ion-datetime.md::part(calendar-day today) {
+  border-color: #8462d1;
+}
+
+
+ion-datetime.ios::part(calendar-day active),
+ion-datetime.ios::part(calendar-day active):focus {
+  background-color: rgb(154 209 98 / 0.2);
+  color: #9ad162;
+}
+
+.calendar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  gap: 20px;
+  /* فاصله بین آیتم‌ها */
+}
+
+.containerOffDays {
+  width: 100%;
+  max-width: 350px;
+  border: 1px solid #9b9b9b;
+  border-radius: 8px;
+  background: #f7f7f7;
+  padding: 10px 15px;
+}
+
+.calendar-container {
+  width: 100%;
+  max-width: 350px;
+}
+
+
+.calendar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  gap: 20px;
+}
+
+.containerOffDays,
+.calendar-container,
+.ionButtonWrapper {
+  width: 100%;
+  max-width: 350px;
+}
+
+.ionButtonWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.ionButton {
+  width: 100%;
+}
+
+
+
+.label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  /* Optional: Change the label color */
+}
+
+.toggle {
+  /*  Customize the checkbox appearance */
+  appearance: none;
+  width: 40px;
+  height: 20px;
+  background-color: #ddd;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:checked {
+    background-color: #4caf50;
+    /* Green when checked */
+  }
+
+  &:focus {
+    outline: none;
+    /* Remove default focus outline */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    /* Add a shadow on focus */
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+    transform: translateX(0);
+    /* Initially on the left */
+  }
+
+  &:checked:before {
+    transform: translateX(20px);
+    /* Move to the right when checked */
+  }
+}

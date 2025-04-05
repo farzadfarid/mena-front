@@ -19,7 +19,7 @@ export const routes: Routes = [
   {
     path: 'login-specialist',
     loadComponent: () => import('./Features/Specialist/login-specialist/login-specialist.component').then(m => m.LoginSpecialistComponent),
-    data: { title: 'Sign In or Sign Up Specialist' }
+    data: { title: 'Sign In Specialist' }
   },
   {
     path: 'register-specialist',
@@ -78,11 +78,25 @@ export const routes: Routes = [
     loadComponent: () => import('./Features/shared/delete-account/delete-account.component').then(m => m.DeleteAccountComponent),
     data: { title: 'Delete Account' }
   },
+
+
+  //specialist account
+  {
+    path: 'off-days-manager',
+    loadComponent: () => import('./Features/Specialist/off-days-manager/off-days-manager.component').then(m => m.OffDaysManagerComponent),
+    data: { title: 'Off Days Manager' }
+  },
+
   {
     path: '**',
     loadComponent: () => import('./Core/Components/notfound/notfound.component').then(m => m.NotfoundComponent),
     data: { title: 'Not Found Page' }
   },
+
+
+
+
+
   // {
   //   path: 'outbox',
   //   loadComponent: () => import('./features/outbox/outbox.page').then(m => m.OutboxPage)

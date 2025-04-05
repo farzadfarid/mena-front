@@ -1,10 +1,44 @@
-html,
-body,
-ion-content {
-    padding: 0 !important;
-    margin: 0 !important;
+:host {
+    display: block;
+    padding-top: calc(var(--search-height, 140px) + var(--ion-safe-area-top, 0px));
+    /* Added ion-safe-area-top to account for device status bar */
 }
 
+
+
+
+
+
+
+
+/* Search and view toggle container */
+.search-view-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+.view-toggle {
+    display: flex;
+    align-items: center;
+}
+
+.view-toggle ion-button {
+    margin: 0 5px;
+}
+
+.view-toggle .active {
+    --color: var(--ion-color-primary);
+    opacity: 1;
+}
+
+.view-toggle ion-button:not(.active) {
+    opacity: 0.5;
+}
+
+/* Grid view */
 .card-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -27,11 +61,48 @@ ion-content {
     transform: scale(1.05);
 }
 
-
-
 ion-card-title {
     font-size: 1.2rem;
     font-weight: bold;
+}
+
+/* List view */
+.list-container {
+    padding: 0 16px;
+}
+
+.specialist-list-item {
+    margin-bottom: 8px;
+    border-radius: 8px;
+    --border-radius: 8px;
+    --padding-start: 8px;
+    --padding-end: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.specialist-list-item:hover {
+    transform: translateX(5px);
+}
+
+ion-thumbnail {
+    --border-radius: 6px;
+    margin-right: 12px;
+    width: 80px;
+    height: 80px;
+}
+
+.list-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 5px;
+}
+
+.badge-item-small {
+    font-size: 10px;
+    padding: 2px 6px;
 }
 
 .pagination-controls {
@@ -46,9 +117,36 @@ ion-card-title {
     min-width: 80px;
 }
 
+.image-container {
+    position: relative;
+    width: 100%;
+}
 
+.specialist-image {
+    width: 100%;
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
 
+.badge-container {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
 
+.badge-item {
+    font-size: 12px;
+    padding: 4px 8px;
+    white-space: nowrap;
+}
 
 @media (max-width: 600px) {
     .card-container {
@@ -68,48 +166,66 @@ ion-card-title {
         border-radius: 0 !important;
         display: block !important;
     }
+
+    .list-container {
+        padding: 0;
+    }
+
+    .specialist-list-item {
+        border-radius: 0;
+        --border-radius: 0;
+        margin-bottom: 1px;
+    }
 }
 
-.ion-padding {
-    --padding-start: 0px !important;
-}
+// .ion-padding {
+//     --padding-top: var(--search-height, 100px);
+//     /* مقدار پیش‌فرض */
+//     overflow-y: auto;
+// }
 
 
 
 
 
-.image-container {
-    position: relative;
-    width: 100%;
-}
-
-.specialist-image {
-    width: 100%;
-
-    object-fit: cover;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-}
-
-.badge-container {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
+.view-toggle {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    /* چینش آیتم‌ها در راست‌ترین نقطه */
-    gap: 5px;
-    padding: 5px;
-    background: rgba(0, 0, 0, 0.3);
-    /* بک‌گراند نیمه‌شفاف برای خوانایی بهتر */
+    align-items: center;
+    background-color: #f5f5f5;
     border-radius: 8px;
+    padding: 2px;
+
+    margin-bottom: 10px;
+    margin-top: 8px;
 }
 
-/* استایل هر سرویس */
-.badge-item {
-    font-size: 12px;
-    padding: 4px 8px;
-    white-space: nowrap;
-    /* جلوگیری از شکست متن */
+@media (min-width: 592px) {
+    .view-toggle {
+        width: 97%;
+        margin: 0 auto;
+        margin-bottom: 10px;
+
+    }
+}
+
+
+.view-button {
+    margin: 0;
+    height: 36px;
+    width: 36px;
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --box-shadow: none;
+    --border-radius: 6px;
+}
+
+.view-toggle .active {
+    --background: var(--ion-color-primary);
+    --color: white;
+}
+
+.view-toggle ion-button:not(.active) {
+    --color: #666;
 }

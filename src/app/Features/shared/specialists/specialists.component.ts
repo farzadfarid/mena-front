@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SpecialistService } from 'src/app/Core/Services/specialist.service';
 import {
   IonButton,
-  IonContent, IonCard, IonCardHeader, IonCardTitle, IonBadge
+  IonContent, IonCard, IonCardHeader, IonCardTitle, IonBadge, IonList, IonItem, IonThumbnail, IonLabel, IonIcon
 } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -11,6 +11,10 @@ import { Router } from '@angular/router';
 import { SearchSpecialistsComponent } from "../search-specialists/search-specialists.component";
 import { ToastService } from 'src/app/Core/Services/toast.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { addIcons } from 'ionicons';
+import { gridOutline, listOutline, searchOutline } from 'ionicons/icons';
+import { environment } from 'src/environments/environment.development';
+import { SkillModel } from 'src/app/Core/Models/Specialists/specialistService.model';
 
 
 @Component({
@@ -18,65 +22,103 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './specialists.component.html',
   styleUrls: ['./specialists.component.scss'],
   standalone: true,
-  imports: [IonCard, IonContent, IonCard, CommonModule, IonBadge, IonCardHeader, IonCardTitle, TranslateModule,
+  imports: [IonCard, IonContent, IonCard, CommonModule, IonBadge, IonCardHeader, IonList, IonIcon, IonLabel, IonItem, IonThumbnail, IonCardTitle, TranslateModule,
     IonButton, FormsModule, LoadingComponent, SearchSpecialistsComponent]
 })
 export class SpecialistsComponent implements OnInit {
 
+  currentLang = 'en';
   specialists: any[] = [];
   filteredSpecialists: any[] = [];
-  searchTerm: string = '';
-  searchDate: string = '';
   currentPage: number = 1;
   specialistsPerPage: number = 8;
   isLoading = false;
   hasSearched = false;
+  viewMode: 'list' | 'grid' = 'list';
+  searchHeight: number = 170;
+  showNoFoundMessage: boolean = false;
+  constructor(private message: ToastService, private specialistService: SpecialistService, private router: Router) {
+    addIcons({ gridOutline, listOutline, searchOutline });
 
-  services: any[] = ['Plumbing', 'Carpentry', 'Masonry'];
+  }
 
 
-  constructor(private message: ToastService, private specialistService: SpecialistService, private router: Router) { }
+  imageUrl = environment.imageUrl;
 
+  updateSearchHeight(height: number) {
+    this.searchHeight = height; // مقدار داینامیک رو ست کن
+  }
+
+
+  toggleViewMode() {
+    this.viewMode = this.viewMode === 'grid' ? 'list' : 'grid';
+  }
   ngOnInit() {
-
+    this.currentLang = localStorage.getItem('selectedLanguage') || 'en';
   }
 
-  filterSpecialists() {
-    this.filteredSpecialists = this.specialists
-      .filter(specialist =>
-        specialist.skills.toLowerCase().includes(this.searchTerm.toLowerCase())
-      )
-      .slice((this.currentPage - 1) * this.specialistsPerPage, this.currentPage * this.specialistsPerPage);
+
+  getLocalizedSkillName(skill: SkillModel): any {
+    if (skill) {
+      return skill?.name?.values?.[this.currentLang] || 'No name';
+    }
   }
 
-  onSearch(event: { skill: string; date: string }) {
+  onSearch(event: { serviceIds: number[]; atDates: string[] }) {
+    console.log(event.serviceIds, event.atDates);
     this.isLoading = true;
-    this.searchTerm = event.skill;
-    this.searchDate = event.date;
     this.hasSearched = true;
 
-    this.specialistService.getSpecialists(this.searchDate).subscribe((data) => {
-      this.isLoading = false;
-      if (data.length === 0) {
-        this.message.showInfo('No specialists found for the selected date');
+    this.specialistService.getSpecialists(event.serviceIds, event.atDates).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        const specialists = response.data;
+        this.showNoFoundMessage = false;
+        this.specialists = specialists;
+        this.specialists.map((specialist) => {
+          specialist.avatar = this.imageUrl + specialist.avatar;
+        });
+        console.log(specialists);
+        this.currentPage = 1; // reset pagination
+        if (!this.specialists || this.specialists.length === 0) {
+          this.showNoFoundMessage = true;
+        }
+
+      },
+      error: () => {
+        this.isLoading = false;
+        this.message.showError('Error fetching specialists');
       }
-      this.specialists = data;
-      this.filterSpecialists();
     });
   }
+
+
+  getCurrentPageSpecialists(): any[] {
+    if (!this.specialists || this.specialists.length === 0) {
+      return [];
+    }
+
+    const startIndex = (this.currentPage - 1) * this.specialistsPerPage;
+    const endIndex = this.currentPage * this.specialistsPerPage;
+    return this.specialists.slice(startIndex, endIndex);
+  }
+
+
+
+
   nextPage() {
-    if (this.currentPage * this.specialistsPerPage < this.specialists.length) {
+    const totalPages = Math.ceil(this.specialists.length / this.specialistsPerPage);
+    if (this.currentPage < totalPages) {
       this.currentPage++;
-      this.filterSpecialists();
     }
   }
 
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.filterSpecialists();
     }
   }
+
 
   viewSpecialist(id: number) {
     this.router.navigate(['/specialist-detail', id]);

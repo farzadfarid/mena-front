@@ -1,34 +1,75 @@
-<div class="search-container">
-  <ion-grid>
-    <ion-row>
-      <!-- First Column: ion-select for Services -->
-      <ion-col size="6">
-        <div class="search-field">
-          <label>{{ "Services"  | translate }}</label>
-          <ion-select [(ngModel)]="selectedSkill" [multiple]="true" placeholder="Select Services">
-            <ion-select-option *ngFor="let skill of skills" [value]="skill">{{ skill }}</ion-select-option>
-          </ion-select>
-        </div>
-      </ion-col>
+<div #searchContainer class="search-container" [class.fixed]="isSearchPanelFixed">
 
-      <!-- Second Column: ion-datetime-button for Date -->
-      <ion-col size="6">
-        <div class="search-field">
-          <label>{{ "Date"  | translate }}</label>
-          <ion-datetime-button datetime="datetime"></ion-datetime-button>
-          <ion-modal [keepContentsMounted]="true">
-            <ion-content>
-              <ng-template>
-                <ion-datetime id="datetime" presentation="date" ></ion-datetime>
-              </ng-template>
-            </ion-content>
-          </ion-modal>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  @if (showEditMode) {
+    <div class="edit-mode-container">
+      <div class="edit-mode-btn" (click)="enableEditMode()">
+        <ion-icon name="create-outline"></ion-icon>
+        <span>{{ 'Edit Mode' | translate }}</span>
+      </div>
+    </div>
+  }
 
-  <ion-button (click)="search()" class="ionButton" color="dark" expand="block">
-    {{ "Search Specialists"  | translate }}
-  </ion-button>
+  @if (!showEditMode) {
+    <ion-grid class="ion-grid">
+      <ion-row>
+        <ion-col size="12" md="6">
+          <div class="search-field">
+            <label>{{ "Services" | translate }}</label>
+            <ion-select [(ngModel)]="selectedServiceIds" [multiple]="true" placeholder="{{ 'Select Services' | translate }}">
+              <ion-select-option *ngFor="let service of services" [value]="service.id">{{ service.name }}</ion-select-option>
+            </ion-select>
+          </div>
+        </ion-col>
+        <ion-col size="12" md="6">
+          <div class="search-field">
+            <label>{{ "Dates" | translate }}</label>
+
+            <section class="selctionDateIcon">
+              <ion-button id="open-datepicker" fill="clear" class="date-trigger-button">
+                <ion-icon name="calendar-outline" slot="start"></ion-icon>
+                Select Dates
+              </ion-button>
+            </section>
+
+            <ion-modal trigger="open-datepicker" [keepContentsMounted]="true">
+              <ion-content class="datetime-modal-content">
+                <ng-template>
+                  <div class="datetime-wrapper">
+                    <ion-datetime
+                      [showDefaultButtons]="true"
+                      [multiple]="true"
+                      id="datetime"
+                      (ionChange)="onDateChange($event)"
+                      presentation="date">
+                    </ion-datetime>
+                  </div>
+                </ng-template>
+              </ion-content>
+            </ion-modal>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-button style="margin-bottom: 10px !important;" (click)="search()" class="ionButton" color="dark" expand="block">
+      {{ "Search" | translate }}
+    </ion-button>
+  }
+
+  @if (selectedServiceIds && selectedServiceIds.length > 0) {
+    <div class="badge-containerServiceDates" style="margin-bottom: 5px;">
+      <span style="color: #333 !important;">{{ 'Services:' | translate }}</span>
+      <ion-badge *ngFor="let name of getSelectedServiceNames()" color="warning" class="badge-item">
+        {{ name }}
+      </ion-badge>
+    </div>
+  }
+
+  @if (selectedDates && selectedDates.length > 0) {
+    <div class="badge-containerServiceDates">
+      <span style="color: #333 !important;">{{ 'Dates:' | translate }}</span>
+      <ion-badge *ngFor="let item of selectedDates" color="warning" class="badge-item">{{ item }}</ion-badge>
+    </div>
+  }
+
 </div>

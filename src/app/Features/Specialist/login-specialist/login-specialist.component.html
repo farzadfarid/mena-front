@@ -1,5 +1,9 @@
-<div class="ionMarginTop"></div>
-<ion-content class="ion-padding">
+@if(isLoading){
+  <app-loading></app-loading>
+}
+
+<div class="ionMarginTop"></div> 
+<ion-content class="ion-padding" [fullscreen]="false" scroll-padding="true">
   <div class="login-container">
     <!-- Logo -->
     <ion-icon name="log-in-outline" class="login-logo"></ion-icon> 
@@ -10,10 +14,27 @@
 
     <!-- Login Form -->
     <ion-list class="login-form">
-      <ion-button expand="block" color="dark" class="custom-button">
+     <!-- <ion-button expand="block" color="dark" class="custom-button">
         <ion-icon name="log-in-outline"></ion-icon>
         {{ 'SignIn with BankID' | translate }}
+      </ion-button>-->
+
+      <ion-item>
+        <ion-label position="floating">{{ 'Email' | translate }}</ion-label>
+        <ion-input type="email" [(ngModel)]="email" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">{{ 'Password' | translate }}</ion-label> 
+        <ion-input type="password" [(ngModel)]="password" required></ion-input>
+      </ion-item>
+
+      <!-- Login Button -->
+      <ion-button expand="block" (click)="login()" color="dark" [disabled]="!email || !password">
+        {{ 'SIGN_IN' | translate }}
       </ion-button>
+
+
 
       <!-- Sign Up Link -->
       <p class="signup-text">

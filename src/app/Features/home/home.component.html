@@ -1,6 +1,8 @@
+<ion-header>
+  
+</ion-header>
 
-
-<ion-content class="main ion-padding ion-text-center ">
+<ion-content class="main ion-padding ion-text-center " [fullscreen]="false" >
   <div class="ionMarginTop"></div>
   <!-- Logo -->
   <div class="logo-container"> 
@@ -9,9 +11,12 @@
 
   <div class="button-container">
  
-  <ion-button  expand="block" color="dark" (click)="specialist()" class="custom-button">
-    <ion-icon name="list-outline"></ion-icon> 
-    Service Appointment
-  </ion-button>
+    <ion-button  expand="block" color="dark" (click)="specialist()" class="custom-button">
+      <ion-icon name="list-outline"></ion-icon> 
+      Service Appointment
+    </ion-button>
   </div>
+
+  <ion-toggle style="display: none;">Default Toggle</ion-toggle>
 </ion-content>
+

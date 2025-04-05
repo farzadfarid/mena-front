@@ -1,5 +1,9 @@
+
+@if(isLoading){
+  <app-loading></app-loading>
+}
 <div class="ionMarginTop"></div>
-<ion-content class="ion-padding">
+<ion-content class="ion-padding" [fullscreen]="false" scroll-padding="true">
   <div class="login-container">
     <!-- Logo -->
     <ion-icon name="log-in-outline" class="login-logo"></ion-icon>

@@ -4,7 +4,7 @@ import { addIcons } from 'ionicons';
 import { logInOutline, personCircle } from 'ionicons/icons';
 import {
   IonButton, IonGrid, IonRow, IonCol,
-  IonContent, IonLabel, IonInput, IonItem
+  IonContent, IonLabel, IonInput, IonItem, IonNote 
 } from '@ionic/angular/standalone';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ModalController } from '@ionic/angular';
@@ -12,37 +12,50 @@ import { BankCardFormComponent } from 'src/app/Features/shared/bank-card-form/ba
 import { ModalComponent } from "../../../../Core/Modal/modal/modal.component";
 import { PolicyComponent } from 'src/app/Features/shared/policy/policy.component';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/Core/Services/auth.service';
+import { ToastService } from 'src/app/Core/Services/toast.service';
+import { userRealRegisterModel } from 'src/app/Core/Models/User/realUser.model';
+import { LoadingComponent } from "../../../../Core/loading/loading.component";
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-register-personal',
   templateUrl: './register-personal.component.html',
   styleUrls: ['./register-personal.component.scss'],
   standalone: true,
-  imports: [IonItem, IonInput, IonLabel, IonContent, IonGrid, IonRow, IonCol, TranslateModule,
-    IonButton, ReactiveFormsModule, ModalComponent]
+  imports: [IonNote, IonItem, IonInput, IonLabel, IonContent, IonGrid, IonRow, IonCol, TranslateModule,
+    IonButton, ReactiveFormsModule, ModalComponent, LoadingComponent, CommonModule]
 })
 export class RegisterPersonalComponent {
   isAgree = false;
   ruleContent = "";
   ruleTitle = "";
-  registerForm!: FormGroup;
+  isLoading = false;
+  registerForm!: FormGroup<any>;
   langChangeSubscription!: Subscription;
-  constructor(private fb: FormBuilder, private modalCtrl: ModalController, private translate: TranslateService) {
+  constructor(private message: ToastService, private fb: FormBuilder, private modalCtrl: ModalController, private translate: TranslateService, private service: AuthService) {
     addIcons({ personCircle, logInOutline });
 
     this.registerForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(3)]],
-      lastName: ['', [Validators.required, Validators.minLength(3)]],
-      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,15}$')]],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      address: ['', Validators.required],
-      bankInfo: ['', Validators.required],
-      agreeTerms: [false, Validators.requiredTrue],
-      password: ['', Validators.requiredTrue],
-      confirmPassword: ['', Validators.requiredTrue],
+      address: [''],
+      bankInfo: [''],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required],
 
+    }, { validators: this.passwordsMatchValidator });
 
-    });
   }
+
+  passwordsMatchValidator(form: FormGroup) {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+
+    return password === confirmPassword ? null : { passwordsMismatch: true };
+  }
+
   ngOnInit() {
     this.loadTranslations(); // بارگذاری ترجمه‌ها در ابتدا
 
@@ -97,10 +110,38 @@ export class RegisterPersonalComponent {
 
 
   onSubmit() {
-    if (this.registerForm.valid) {
-      console.log('Form Submitted:', this.registerForm.value);
+
+    this.isLoading = true;
+    if (this.registerForm.errors?.['passwordsMismatch']) {
+      this.isLoading = false;
+      this.message.showError("Passwords do not match");
+      return;
+    }
+
+    console.log(this.registerForm);
+    if (this.isAgree) {
+      if (this.registerForm.valid) {
+        const model: userRealRegisterModel = {
+          firstName: this.registerForm.value.firstName,
+          lastName: this.registerForm.value.lastName,
+          phoneNumber: this.registerForm.value.phoneNumber,
+          email: this.registerForm.value.email,
+          password: this.registerForm.value.password,
+          confirmPassword: this.registerForm.value.confirmPassword,
+          bankId: "123456",
+          language: localStorage.getItem('lang') || 'en'
+        };
+        this.service.userRealRegister(model).subscribe(res => {
+          this.isLoading = false;
+          this.message.showSuccess("User Registered Successfully");
+        });
+      } else {
+        this.isLoading = false;
+        this.message.showError("Please fill the form correctly");
+      }
     } else {
-      console.log('Form Invalid');
+      this.isLoading = false;
+      this.message.showError("Please agree to the terms and conditions");
     }
   }
 

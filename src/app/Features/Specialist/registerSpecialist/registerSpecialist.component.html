@@ -1,89 +1,194 @@
+@if(isLoading){
+  <app-loading></app-loading>
+}
 <div class="ionMarginTop"></div>
 <ion-content class="ion-padding">
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <!-- Profile Image Upload -->
     <div class="profile-container">
       <ion-avatar class="profile-avatar">
-        <img *ngIf="profileImage; else defaultAvatar" [src]="profileImage" />
+        <img *ngIf="profileImage; else defaultAvatar" [src]="profileImage"  />
       </ion-avatar>
       <ng-template #defaultAvatar>
         <ion-icon name="person-circle" class="default-avatar"></ion-icon>
       </ng-template>
+
       <ion-button expand="full" color="dark" (click)="uploadImage()">{{ "Select Profile Image"  | translate }}</ion-button>
     </div>
     <ion-grid style="margin-bottom: 50px;">
       <ion-row>
             <ion-col size="12" size-md="6">
               <ion-item>
-                <ion-label position="floating">{{ "First Name"  | translate }}</ion-label>
+                <ion-label position="floating">{{ "First Name"  | translate }}</ion-label> 
                 <ion-input type="text" formControlName="firstName"></ion-input>
               </ion-item>
+              <ion-note color="danger" *ngIf="registerForm.get('firstName')?.hasError('required') && registerForm.get('firstName')?.touched">
+                {{ "First name is required" | translate }}
+              </ion-note>
+              <ion-note color="danger" *ngIf="registerForm.get('firstName')?.hasError('minlength') && registerForm.get('firstName')?.touched">
+                {{ "First name must be at least 3 characters" | translate }}
+              </ion-note>
             </ion-col>
             <ion-col size="12" size-md="6">
               <ion-item>
                 <ion-label position="floating">{{ "Last Name"  | translate }}</ion-label>
                 <ion-input type="text" formControlName="lastName"></ion-input>  
               </ion-item>
+              <ion-note color="danger" *ngIf="registerForm.get('lastName')?.hasError('required') && registerForm.get('lastName')?.touched">
+                {{ "Last name is required" | translate }}
+              </ion-note>
+              <ion-note color="danger" *ngIf="registerForm.get('lastName')?.hasError('minlength') && registerForm.get('lastName')?.touched">
+                {{ "Last name must be at least 3 characters" | translate }}
+              </ion-note>
+              
             </ion-col>
       </ion-row>
      <ion-row>
-      <ion-col size="12" size-md="6">
+      <ion-col size="12" size-md="4">
         <ion-item>
           <ion-label position="floating">{{ "Phone Number"  | translate }}</ion-label>
-          <ion-input type="tel" formControlName="phone"></ion-input>
+          <ion-input type="tel" formControlName="phoneNumber"></ion-input>
         </ion-item>
+        <ion-note color="danger" *ngIf="registerForm.get('phoneNumber')?.hasError('required') && registerForm.get('phoneNumber')?.touched">
+          {{ "Phone number is required" | translate }}
+        </ion-note>
+        <ion-note color="danger" *ngIf="registerForm.get('phoneNumber')?.hasError('pattern') && (registerForm.get('phoneNumber')?.touched || registerForm.get('phoneNumber')?.dirty)">
+          {{ "Phone number must contain only digits and be 10 to 15 digits long" | translate }}
+        </ion-note>
       </ion-col>
-      <ion-col size="12" size-md="6">
+      <ion-col size="12" size-md="4">
         <ion-item>
           <ion-label position="floating">{{ "Email"  | translate }}</ion-label>
           <ion-input type="email" formControlName="email"></ion-input>
         </ion-item>
+        <ion-note color="danger" *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched">
+          {{ "Email is required" | translate }}
+        </ion-note>
+        <ion-note color="danger" *ngIf="registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched">
+          {{ "Invalid email address" | translate }}
+        </ion-note>
+        
       </ion-col>
-  
+
+      <ion-col size="12" size-md="4">
+        <div class="search-field">
+        
+          <section class="selctionDateIcon">
+            <ion-button id="open-datepicker" fill="clear" class="date-trigger-button">
+              <ion-icon name="calendar-outline" slot="start"></ion-icon>
+              {{ selectedBirthDate ? (selectedBirthDate | date:'yyyy-MM-dd') : 'Select birthdate'| translate }}
+            </ion-button>
+          </section>
+      
+          <ion-modal trigger="open-datepicker" [keepContentsMounted]="true" (didDismiss)="onBirthDateModalDismiss()">
+            <ion-content class="datetime-modal-content">
+              <div class="datetime-wrapper">
+                <ion-datetime
+                  id="datetime"
+                  presentation="date"
+                  [max]="maxDate"
+                  (ionChange)="onBirthDateChange($event)"
+                  [showDefaultButtons]="true">
+                </ion-datetime>
+              </div>
+            </ion-content>
+          </ion-modal>
+        </div>
+      
+        <ion-note color="danger" *ngIf="registerForm.get('birthDate')?.hasError('required') && registerForm.get('birthDate')?.touched">
+          {{ "Birth date is required" | translate }}
+        </ion-note>
+      </ion-col>
+      
+      
+
     </ion-row>
      
     <ion-row>
         <ion-col size="12" size-md="4">
           <ion-item>
             <ion-label position="floating">{{ "Language"  | translate }}</ion-label>
-            <ion-select formControlName="language" [multiple]="true">
+            <ion-select formControlName="language" >
               <ion-select-option value="en">{{ "English"  | translate }}</ion-select-option>
               <ion-select-option value="sv">{{ "Swedish"  | translate }}</ion-select-option>
             </ion-select>
           </ion-item>
+          <ion-note color="danger" *ngIf="registerForm.get('language')?.hasError('required') && registerForm.get('language')?.touched">
+            {{ "Language is required" | translate }}
+          </ion-note>
+          
         </ion-col>
         <ion-col size="12" size-md="4">
           <ion-item>
             <ion-label position="floating">{{ "Services"  | translate }}</ion-label>
-            <ion-input type="text" formControlName="skills"></ion-input>
-          </ion-item>
+
+            <ion-select formControlName="serviceId" name="serviceId" (ionChange)="onChangeService($event)">
+              <ion-select-option *ngFor="let item of serviceLists" [value]="item.id" >  {{ item.name }}</ion-select-option>
+            </ion-select>
+           
+          </ion-item> 
+          <ion-note color="danger" *ngIf="registerForm.get('serviceId')?.hasError('required') && registerForm.get('serviceId')?.touched">
+            {{ "Please select a service" | translate }}
+          </ion-note>
+          
         </ion-col>
-        <ion-col size="12" size-md="4" style="padding-top: 10px;">
-          <ion-item >
-            <ion-label position="start">{{ "InformationCard"  | translate }}</ion-label>
-            <ion-button expand="block" color="warning" fill="clear" (click)="openBankCardModal()">{{ "Add a bank card"  | translate }}</ion-button>
-          </ion-item>
+        <ion-col size="12" size-md="4" >
+          <ion-item>
+            <ion-label position="floating">{{ "Skills"  | translate }}</ion-label>
+
+            <ion-select formControlName="skillsId" name="skillsId" multiple="true">
+              <ion-select-option *ngFor="let item of skillLists" [value]="item.id" > {{ getLocalizedSkillName(item) }}</ion-select-option>
+            </ion-select>
+           
+          </ion-item> 
         </ion-col>
 
       </ion-row>
     
     
       <ion-row>
-        <ion-col size="12">
+
+        <ion-col size="12" size-md="6">
+          <ion-item >
+            <ion-label position="start">{{ "InformationCard"  | translate }}</ion-label>
+            <ion-button style="height: 50px;" expand="block" color="warning" fill="clear" (click)="openBankCardModal()">{{ "Add a bank card"  | translate }}</ion-button>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="12" size-md="6">
           <ion-item>
             <ion-label position="floating">{{ "Address"  | translate }}</ion-label>
             <ion-input type="text" formControlName="address"></ion-input>
           </ion-item>
+          <ion-note color="danger" *ngIf="registerForm.get('address')?.hasError('required') && registerForm.get('address')?.touched">
+            {{ "Address is required" | translate }}
+          </ion-note>
+          
         </ion-col>
       </ion-row>
     
       <ion-row>
-        <ion-col size="12">
+        <ion-col size="12" size-md="6">
           <ion-item>
-            <ion-label position="floating">{{ "Summary"  | translate }}</ion-label>
-            <ion-textarea (mousedown)="presentModal()" formControlName="summary"></ion-textarea>
+            <ion-label position="floating">{{ "Description"  | translate }}</ion-label>
+            <ion-textarea (mousedown)="presentModal()" formControlName="description"></ion-textarea>
           </ion-item>
+          <ion-note color="danger" *ngIf="registerForm.get('description')?.hasError('required') && registerForm.get('description')?.touched">
+            {{ "Description is required" | translate }}
+          </ion-note>
+          <ion-note color="danger" *ngIf="registerForm.get('description')?.hasError('minlength') && registerForm.get('description')?.touched">
+            {{ "Description can be at most 120 characters" | translate }}
+          </ion-note>
+          
           <app-modal #modal [title]="title" [content]="content"></app-modal>
+        </ion-col>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-button expand="full" color="dark" (click)="fileInput.click()" style="height: 70px;">
+              {{ "Select Your Resume File (pdf)"  | translate }}
+            </ion-button>
+            <input type="file" accept="application/pdf" #fileInput (change)="onResumeSelected($event)" hidden>
+          </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -92,6 +197,12 @@
             <ion-label position="floating">{{ "Password"  | translate }}</ion-label>
             <ion-input type="password" formControlName="password"></ion-input>
           </ion-item>
+          <ion-note color="danger" *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched">
+            {{ "Password is required" | translate }}
+          </ion-note>
+          <ion-note color="danger" *ngIf="registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched">
+            {{ "Password must be at least 6 characters" | translate }}
+          </ion-note>
         </ion-col>
     
         <ion-col size="12" size-md="6">
@@ -99,6 +210,13 @@
             <ion-label position="floating">{{ "Confirm New Password"  | translate }}</ion-label>
             <ion-input type="password" formControlName="confirmPassword"></ion-input>
           </ion-item>
+          <ion-note color="danger" *ngIf="registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched">
+            {{ "Confirm password is required" | translate }}
+          </ion-note>
+          <ion-note color="danger" *ngIf="registerForm.hasError('passwordMismatch') && (registerForm.get('confirmPassword')?.touched || registerForm.get('confirmPassword')?.dirty)">
+            {{ "Passwords do not match" | translate }}
+          </ion-note>
+          
         </ion-col>
       </ion-row>
       <ion-row>
@@ -112,7 +230,7 @@
     
       <ion-row>
         <ion-col size="12" class="ion-text-center">
-          <ion-button expand="block" color="dark" type="submit" >{{ "Register"  | translate }}</ion-button>
+          <ion-button expand="block" color="dark" type="submit" [disabled]="!registerForm.valid" >{{ "Register"  | translate }}</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

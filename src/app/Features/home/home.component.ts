@@ -1,25 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  IonButton, IonIcon,
-  IonContent,
-} from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   standalone: true,
-  imports: [
-    IonContent,
-    IonButton,
-    IonIcon
-  ]
+  imports: [IonicModule]
 })
 export class HomeComponent implements OnInit {
 
   constructor(private router: Router) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
   goSelectPage() {
     this.router.navigateByUrl('/select-company-or-personal')
   }

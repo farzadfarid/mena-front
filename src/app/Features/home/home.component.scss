@@ -1,44 +1,53 @@
 .main {
     --background: none !important;
-    /* Override Ionic's default background */
-    margin: 0 !important;
-    height: 100vh !important;
-
-    background: linear-gradient(135deg, #C6FF00, #009CFF) !important;
+    background: url('./../../../assets/images/bg-desktop.jpg') no-repeat center center fixed !important;
     background-size: cover !important;
-    background-position: center !important;
-    background-attachment: fixed !important;
-
-    /* Adding Glassmorphism Blur Effect */
-    position: relative !important;
-    overflow: hidden !important;
-
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
 }
 
-.main::before {
-    content: "" !important;
-    position: absolute !important;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-
-    background: inherit !important;
-    /* Keep the same gradient */
-    filter: blur(25px) !important;
-    /* Apply the blur effect */
-    -webkit-filter: blur(25px) !important;
-    /* Safari Support */
-    z-index: -1 !important;
-    /* Push it behind the content */
+@media (max-width: 768px) {
+    .main {
+        background: url('./../../../assets/images/bg-mobile.jpg') no-repeat center top fixed !important;
+        background-size: cover !important;
+    }
 }
 
-.main * {
-    position: relative !important;
-    z-index: 1 !important;
-    /* Ensure content stays on top */
+.glass-box {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+
+
+@keyframes fadeSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.logo-container,
+.button-container {
+    animation: fadeSlide 0.8s ease-out forwards;
+    opacity: 0;
+    /* قبل از انیمیشن مخفی */
+    animation-delay: 0.3s;
+}
 
 
 
@@ -66,7 +75,15 @@
     margin-top: 10px;
     width: 100%;
     max-width: 400px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
+
+.custom-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
 
 /* Make buttons responsive */
 @media (min-width: 768px) {

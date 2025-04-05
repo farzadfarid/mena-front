@@ -2,41 +2,25 @@
   <app-loading></app-loading>
 }
 
-<ion-split-pane when="never" contentId="main-content">
+<ion-split-pane when="never" contentId="main-content" > 
     <app-menu></app-menu>
-  <div class="ion-page" id="main-content">
 
+ 
+    <div class="ion-page" id="main-content">
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar class="toolbar">
         <ion-buttons slot="start">
-          <ion-menu-button></ion-menu-button>
-          <ion-buttons>
-            <ion-button (click)="goBack()">
-              <ion-icon slot="start" name="arrow-back"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-buttons>
-    
-        <ion-title>{{pageTitle }}</ion-title>
-    
-        <ion-buttons slot="end">
-          <ion-select [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage($event)" interface="popover">
-            <ion-select-option value="sv">SV</ion-select-option>
-            <ion-select-option value="en">EN</ion-select-option>
-          </ion-select>
-        </ion-buttons>
-        <img src="assets/images/logo2.png" alt="Company Logo" class="toolbar-logo" />
-
+          <ion-menu-button></ion-menu-button></ion-buttons>
+          <ion-title>{{pageTitle }}</ion-title>
+         <img src="assets/images/logo2.png" alt="Company Logo" class="toolbar-logo" />
       </ion-toolbar>
     </ion-header>
-    
     
 
   <ion-router-outlet>
 
   </ion-router-outlet>
-   
-  
+
      <ion-tabs>
        
         <ion-tab-bar slot="bottom">
@@ -48,22 +32,19 @@
           
           <ion-tab-button tab="search">
             <ion-icon name="search-outline"></ion-icon> 
-            <ion-label>Search</ion-label>
+            <ion-label>{{ 'Search' | translate }}</ion-label>
           </ion-tab-button>
           
           <ion-tab-button tab="notifications">
             <ion-icon name="notifications-outline"></ion-icon>
-            <ion-label>Alerts</ion-label>
+            <ion-label>{{ 'Alerts' | translate }}</ion-label>
           </ion-tab-button>
           
           <ion-tab-button tab="settings" (click)="goSettingPage()">
             <ion-icon name="settings-outline"></ion-icon>
-            <ion-label>Settings</ion-label>
+            <ion-label>{{ 'Settings' | translate }}</ion-label>
           </ion-tab-button>
         </ion-tab-bar>
       </ion-tabs>
   </div>
 </ion-split-pane>
-
-
-

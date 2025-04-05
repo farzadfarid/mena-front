@@ -15,3 +15,7 @@
 ion-select {
     min-width: 100px;
 }
+
+.toolbar {
+    padding-top: env(safe-area-inset-top);
+}

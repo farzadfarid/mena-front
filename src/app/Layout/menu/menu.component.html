@@ -1,19 +1,19 @@
 <ion-menu contentId="main-content" type="overlay" menuId="main-menu">
   <ion-content>
-    <ion-list id="inbox-list" >
-      <ion-list-header>MENA</ion-list-header>
+    <ion-list class="user-info-list">
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <ion-icon name="person-circle-outline" class="avatar-icon"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ userInfo?.name }}</h2>
 
-      <!-- <ion-item>
-        <ion-icon slot="start" [name]="darkMode ? 'moon-outline' : 'sunny-outline'"></ion-icon>
-        @if(darkMode){
-          <ion-label>{{ 'LightMode' | translate }}</ion-label>
-        }
-        @else{
-          <ion-label>{{ 'DarkMode' | translate }}</ion-label>
-        }
-        <ion-toggle [checked]="darkMode" (ionChange)="toggleDarkTheme($event)"></ion-toggle> 
-      </ion-item> -->
-      
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <div class="custom-divider"></div>
+
+    <ion-list id="inbox-list">
 
       <ion-menu-toggle auto-hide="false">
         <ion-item class="ionItem" routerDirection="root" routerLink="/home" lines="none" detail="false" routerLinkActive="selected">
@@ -22,18 +22,13 @@
         </ion-item>
       </ion-menu-toggle>
 
-
-
       <ion-menu-toggle auto-hide="false">
         <ion-item class="ionItem" routerDirection="root" routerLink="/select-company-or-personal" lines="none" detail="false" routerLinkActive="selected">
-          <ion-icon aria-hidden="true" slot="start" ios="list-sharp" md="list-outline" ></ion-icon>
+          <ion-icon aria-hidden="true" slot="start" name="log-in-outline"></ion-icon>
           <ion-label>{{ 'SIGN_IN' | translate }}</ion-label>
         </ion-item>
       </ion-menu-toggle>
 
-     
     </ion-list>
-
-   
   </ion-content>
 </ion-menu>

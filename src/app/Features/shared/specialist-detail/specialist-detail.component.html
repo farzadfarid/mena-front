@@ -8,7 +8,7 @@
 
   <ion-card>
     <div class="image-container">
-      <img [src]="specialist?.image" alt="Specialist Image" class="specialist-image" />
+      <img [src]="specialist?.avatar" alt="Specialist Image" class="specialist-image" />
       <div class="back-button-overlay">
         <ion-button (click)="goBack()" fill="clear" color="light">
           <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
@@ -17,46 +17,46 @@
     </div>
 
     <ion-card-header>
-      <ion-card-title>{{ specialist?.fullName }}</ion-card-title>
+      <ion-card-title>{{ specialist?.firstName }} {{specialist?.lastName}}</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
-      <p class="summary">{{ specialist?.summary }}</p>
+      <p class="summary">{{ getLocalizedDescription() }}</p>
 
       <ion-list>
         <ion-item>
-          <ion-label><strong>Age:</strong></ion-label>
-        <ion-badge color="warning">  {{ specialist?.age }}</ion-badge>
+          <ion-label><strong>{{ "Birthdate" | translate }}:</strong></ion-label>
+        <ion-badge color="warning">  {{ specialist?.birthDate | date }}</ion-badge>
         </ion-item>
 
-        <ion-item>
+        <!-- <ion-item>
           <ion-label><strong>Certification:</strong></ion-label>
             <ion-badge [color]="specialist?.certified ? 'success' : 'danger'">
               {{ specialist?.certified ? 'Yes' : 'No' }}
             </ion-badge>
           
-        </ion-item>
+        </ion-item> -->
 
         <ion-item>
-          <ion-label><strong>Skills:</strong></ion-label>
+          <ion-label><strong>{{ "Skills" | translate }}:</strong></ion-label>
           <div class="skills-container">
             <ion-badge *ngFor="let skill of specialist?.skills" color="primary">
-              {{ skill }}
+              {{ getLocalizedSkillName(skill) }} 
             </ion-badge>
           </div>
         </ion-item>
 
         <ion-item>
-          <ion-label><strong>Rating:</strong></ion-label>
+          <ion-label><strong>{{ "Rating" | translate }}:</strong></ion-label>
           <ion-icon *ngFor="let star of [1,2,3,4,5]" name="star" 
                     [color]="star <= specialist?.rating ? 'warning' : 'medium'">
           </ion-icon>
         </ion-item>
 
         <ion-item>
-          <ion-label><strong>CV:</strong></ion-label>
+          <ion-label><strong>{{ "CV" | translate }}:</strong></ion-label>
           <ion-button fill="outline" color="secondary" (click)="downloadCV()">
-            Download CV <ion-icon slot="end" name="download-outline"></ion-icon>
+            {{ "Download CV" | translate }} <ion-icon slot="end" name="download-outline"></ion-icon>
           </ion-button>
         </ion-item>
       </ion-list>
@@ -69,7 +69,7 @@
 
         <ion-button expand="block" fill="outline" color="success">
           <ion-icon name="person-add-outline" slot="start"></ion-icon>
-          Register
+          {{ "Book" | translate }}
         </ion-button>
       </div>
     </ion-card-content>
