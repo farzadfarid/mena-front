@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "80199526670",
+    "project_id": "mena-e9cc9",
+    "storage_bucket": "mena-e9cc9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:80199526670:android:092c2c1520b999cc164f5f",
+        "android_client_info": {
+          "package_name": "com.mena"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZxJrUROJD2QQfOFZ02kcVvxgpttScZ9A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

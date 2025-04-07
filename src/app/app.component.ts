@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { MainComponent } from "./Layout/main/main.component";
 import { SpecialistService } from './Core/Services/specialist.service';
 import { IonicModule } from '@ionic/angular';
+import { FirebasetestComponent } from "./temp/firebasetest/firebasetest.component";
 
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
-  imports: [MainComponent, IonicModule]
+  imports: [MainComponent, IonicModule, FirebasetestComponent]
 })
 export class AppComponent {
   servicesEn: { id: number; name: string }[] = [];

@@ -16,6 +16,7 @@ import { ModalController } from '@ionic/angular';
 import { LanguageInterceptor } from './app/Core/Interceptores/LanguageInterceptor/language.interceptor';
 
 
+
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -23,6 +24,11 @@ export function HttpLoaderFactory(http: HttpClient) {
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    importProvidersFrom(
+      // اگر HttpClientModule یا دیگر ماژول‌ها داری
+    ),
+
+
     provideIonicAngular(),
     provideToastr(),
     provideAnimations(),
