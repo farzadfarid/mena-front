@@ -5,6 +5,10 @@ import { ApiResponse } from '../Response/ApiResponse';
 import { SkillModel, SpecialistServiceModel } from '../Models/Specialists/specialistService.model';
 import { environment } from 'src/environments/environment.development';
 import { SpecialistModel, SpecialistRegisterModel } from '../Models/Specialists/specialist.model';
+import { ServiceAppointmentModel } from '../Models/Specialists/ServiceAppointment.model';
+import { ServiceAppointmentStateCode } from '../enums/ServiceAppointmentStateCode.enum';
+import { ServiceAppointmentStateCountViewModel } from '../Models/Specialists/ServiceAppointmentStateCountViewModel.model';
+import { ExtendedServiceAppointmentModel } from '../Models/Specialists/ExtendedServiceAppointment.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,6 +16,8 @@ export class SpecialistService {
 
   private baseUrl = environment.url;
   private localStorageKey = 'services';
+  state!: ServiceAppointmentStateCode;
+  count!: number;
   constructor(private http: HttpClient) { }
 
   getSpecialists(serviceIds: number[], atDates: string[]): Observable<ApiResponse<SpecialistModel[]>> {
@@ -44,6 +50,13 @@ export class SpecialistService {
     return this.http.get<ApiResponse<SpecialistModel>>(this.baseUrl + `Specialist/${specialistId}`)
   }
 
+  createAppointment(data: {
+    serviceId: number;
+    specialistId: number;
+    serviceDate: string;
+  }[]) {
+    return this.http.post(`${this.baseUrl}ServiceAppointment`, data);
+  }
 
 
   // ذخیره‌سازی تمام سرویس‌ها با اسکیل‌ها در localStorage
@@ -116,5 +129,76 @@ export class SpecialistService {
   getServiceSkills(serviceId: number): Observable<ApiResponse<SkillModel[]>> {
     return this.http.get<ApiResponse<SkillModel[]>>(`${this.baseUrl}Service/${serviceId}/skills`);
   }
+
+
+
+
+
+  getServiceAppointmentStateTranslationKey(state: ServiceAppointmentStateCode): string {
+    switch (state) {
+      case ServiceAppointmentStateCode.New:
+        return 'New';
+      case ServiceAppointmentStateCode.Confirmed:
+        return 'Confirmed';
+      case ServiceAppointmentStateCode.Rejected:
+        return 'Rejected';
+      case ServiceAppointmentStateCode.CanceledByCustomer:
+        return 'Canceled by customer';
+      case ServiceAppointmentStateCode.CanceledBySpecialist:
+        return 'Canceled by specialist';
+      case ServiceAppointmentStateCode.Done:
+        return 'Done';
+      default:
+        return 'unknown';
+    }
+  }
+
+  getAppointmentsByState(states: number[]): Observable<ApiResponse<ServiceAppointmentModel[]>> {
+    let params = new HttpParams();
+    states.forEach(state => {
+      params = params.append('serviceAppointmentStates', state.toString());
+    });
+
+    return this.http.get<ApiResponse<ServiceAppointmentModel[]>>(`${this.baseUrl}ServiceAppointment/specialist-services`, { params });
+  }
+
+  confirmAppointment(appointmentId: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}ServiceAppointment/confirm`, {
+      appointmentId
+    });
+  }
+
+  rejectAppointment(appointmentId: number, rejectReason: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}ServiceAppointment/reject`, {
+      appointmentId,
+      rejectReason
+    });
+  }
+
+  cancelAppointment(appointmentId: number, CancellationReason: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}ServiceAppointment/cancel-by-specialist`, {
+      appointmentId,
+      CancellationReason
+    });
+  }
+
+
+  getServiceAppointmentCounts(states: ServiceAppointmentStateCode[]) {
+    let params = new HttpParams();
+    for (let state of states) {
+      params = params.append('serviceAppointmentStates', state.toString());
+    }
+
+    return this.http.get<{ isSuccess: boolean, data: ServiceAppointmentStateCountViewModel[] }>(
+      `${this.baseUrl}ServiceAppointment/specialist-services-count`,
+      { params }
+    );
+  }
+
+
+  getAppointmentById(id: number) {
+    return this.http.get<{ data: ExtendedServiceAppointmentModel }>(`${this.baseUrl}ServiceAppointment/${id}`);
+  }
+
 
 }

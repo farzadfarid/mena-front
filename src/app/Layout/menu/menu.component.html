@@ -3,7 +3,7 @@
     <ion-list class="user-info-list">
       <ion-item lines="none">
         <ion-avatar slot="start">
-          <ion-icon name="person-circle-outline" class="avatar-icon"></ion-icon>
+          <ion-icon name="person-circle-outline" class="avatar-icon"></ion-icon> 
         </ion-avatar>
         <ion-label>
           <h2>{{ userInfo?.name }}</h2>
@@ -22,12 +22,77 @@
         </ion-item>
       </ion-menu-toggle>
 
+       
+      <!-- realcustomer -->
+       @if(authService.hasRole('realcustomer')){
+        <ion-menu-toggle auto-hide="false">
+          <ion-item routerLink="/my-bookings" lines="none">
+            <ion-icon slot="start" name="calendar-outline"></ion-icon>
+            <ion-label>My Bookings</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+    }
+      <!-- // -->
+
+      @if(authService.hasRole('legalcustomer')){
+      <!-- legalcustomer -->
       <ion-menu-toggle auto-hide="false">
+        <ion-item routerLink="/my-bookings" lines="none">
+          <ion-icon slot="start" name="calendar-outline"></ion-icon>
+          <ion-label>My Bookings</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <!-- // -->
+    }
+
+
+      
+      <!-- specialist -->
+       @if(authService.hasRole('specialist')){
+ 
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/requests" lines="none" routerLinkActive="selected" class="link">
+              <ion-icon slot="start" name="help-outline"></ion-icon>
+              <ion-label>{{ 'Requests' | translate }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/todo" lines="none" routerLinkActive="selected" class="link">
+              <ion-icon slot="start" name="checkmark-outline"></ion-icon>
+              <ion-label>{{ 'To do' | translate }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+    }
+      <!-- // -->
+
+
+      @if(authService.hasRole('specialist')||authService.hasRole('legalcustomer')||authService.hasRole('realcustomer')){
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/dashboard" lines="none" routerLinkActive="selected" class="link">
+              <ion-icon slot="start" name="calendar-outline"></ion-icon>
+              <ion-label>{{ 'Dashboard' | translate }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+    }
+
+
+      <ion-menu-toggle auto-hide="false" *ngIf="!isLoggedIn()">
         <ion-item class="ionItem" routerDirection="root" routerLink="/select-company-or-personal" lines="none" detail="false" routerLinkActive="selected">
           <ion-icon aria-hidden="true" slot="start" name="log-in-outline"></ion-icon>
           <ion-label>{{ 'SIGN_IN' | translate }}</ion-label>
         </ion-item>
       </ion-menu-toggle>
+      
+
+      <ion-menu-toggle auto-hide="false" *ngIf="authService.isLogoutVisible()">
+        <ion-item class="ionItem" lines="none" (click)="logout()" detail="false">
+          <ion-icon slot="start" name="log-in-outline"></ion-icon>
+          <ion-label>{{ 'Logout' | translate }}</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      
+      
 
     </ion-list>
   </ion-content>

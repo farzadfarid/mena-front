@@ -58,6 +58,71 @@ export const routes: Routes = [
     loadComponent: () => import('./Features/shared/specialist-detail/specialist-detail.component').then(m => m.SpecialistDetailComponent),
     data: { title: 'Specialist Detail' }
   },
+
+
+  {
+    path: 'appointments/details/:id',
+    loadComponent: () => import('./Features/Specialist/appointment-details/appointment-details.component').then(m => m.AppointmentDetailsComponent),
+    data: { title: 'Appointments details' }
+  },
+
+
+  {
+    path: 'todo',
+    loadComponent: () => import('./Features/Specialist/States/to-do/to-do.component').then(m => m.ToDoComponent),
+    data: { title: 'To do' }
+  },
+
+  {
+    path: 'requests',
+    loadComponent: () => import('./Features/Specialist/States/requests/requests.component').then(m => m.RequestsComponent),
+    data: { title: 'Requests' }
+  },
+
+  {
+    path: 'completed',
+    loadComponent: () => import('./Features/Specialist/States/completed/completed.component').then(m => m.CompletedComponent),
+    data: { title: 'Completed' }
+  },
+  {
+    path: 'archive',
+    loadComponent: () => import('./Features/Specialist/States/archive-services/archive-services.component').then(m => m.ArchiveServicesComponent),
+    data: { title: 'Archive' }
+  },
+
+
+
+
+
+  {
+    path: 'todo-customer',
+    loadComponent: () => import('./Features/Customers/States/to-do/to-do.component').then(m => m.ToDoComponent),
+    data: { title: 'To do' }
+  },
+
+  {
+    path: 'requests-customer',
+    loadComponent: () => import('./Features/Customers/States/requests/requests.component').then(m => m.RequestsComponent),
+    data: { title: 'Requests' }
+  },
+
+  {
+    path: 'completed-customer',
+    loadComponent: () => import('./Features/Customers/States/completed/completed.component').then(m => m.CompletedComponent),
+    data: { title: 'Completed' }
+  },
+  {
+    path: 'archive-customer',
+    loadComponent: () => import('./Features/Customers/States/archive-services/archive-services.component').then(m => m.ArchiveServicesComponent),
+    data: { title: 'Archive' }
+  },
+
+
+
+
+
+
+
   {
     path: 'dashboard',
     loadComponent: () => import('./Features/shared/dashboard/dashboard.component').then(m => m.DashboardComponent),

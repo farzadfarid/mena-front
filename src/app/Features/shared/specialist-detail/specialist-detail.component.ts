@@ -12,6 +12,7 @@ import { arrowBack, star, downloadOutline, calendarOutline, personAddOutline } f
 import { environment } from 'src/environments/environment.development';
 import { SkillModel } from 'src/app/Core/Models/Specialists/specialistService.model';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToastService } from 'src/app/Core/Services/toast.service';
 
 @Component({
   selector: 'app-specialist-detail',
@@ -29,7 +30,9 @@ export class SpecialistDetailComponent implements OnInit {
   currentLang = 'en';
   imageUrl = environment.imageUrl;
   fileUrl = environment.imageUrl;
-  constructor(private router: Router, private route: ActivatedRoute, private specialistService: SpecialistService) {
+  serviceIds: number[] = [];
+  atDates: string[] = [];
+  constructor(private message: ToastService, private router: Router, private route: ActivatedRoute, private specialistService: SpecialistService) {
     addIcons({ arrowBack, star, downloadOutline, calendarOutline, personAddOutline });
   }
 
@@ -38,6 +41,13 @@ export class SpecialistDetailComponent implements OnInit {
     this.isLoading = true;
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = idParam ? Number(idParam) : null;
+
+    const serviceIdsParam = this.route.snapshot.queryParamMap.get('serviceIds');
+    const atDatesParam = this.route.snapshot.queryParamMap.get('atDates');
+
+    this.serviceIds = serviceIdsParam ? serviceIdsParam.split(',').map(Number) : [];
+    this.atDates = atDatesParam ? atDatesParam.split(',') : [];
+
 
     if (id === null) {
       console.error('Invalid ID in route');
@@ -83,6 +93,29 @@ export class SpecialistDetailComponent implements OnInit {
   getLocalizedDescription(): string {
     const desc = this.specialist?.description?.values;
     return desc?.[this.currentLang] || desc?.en || desc?.sv || 'No description';
+  }
+
+  onBookClick() {
+    if (!this.specialist || !this.serviceIds.length || !this.atDates.length) {
+      alert('Missing booking data');
+      return;
+    }
+
+    const commands = this.serviceIds.map((serviceId, index) => ({
+      serviceId,
+      specialistId: this.specialist.id,
+      serviceDate: this.atDates[index]  // فرض بر اینه که ترتیب‌شون با هم می‌خونه
+    }));
+
+
+    this.specialistService.createAppointment(commands).subscribe({
+      next: () => {
+        this.message.showSuccess("Booking successful!");
+      },
+      error: () => {
+        this.message.showError("Booking failed!");
+      }
+    });
   }
 
 

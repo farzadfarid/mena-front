@@ -1,37 +1,101 @@
-import { Component } from '@angular/core';
-import { MainComponent } from "./Layout/main/main.component";
+import { Component, NgZone, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Capacitor } from '@capacitor/core';
+import { PushNotifications, PushNotificationSchema, ActionPerformed } from '@capacitor/push-notifications';
+import { Platform, AlertController } from '@ionic/angular';
 import { SpecialistService } from './Core/Services/specialist.service';
-import { IonicModule } from '@ionic/angular';
-import { FirebasetestComponent } from "./temp/firebasetest/firebasetest.component";
-
+import { MainComponent } from "./Layout/main/main.component";
+import { IonApp } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
-  imports: [MainComponent, IonicModule, FirebasetestComponent]
+  standalone: true,
+  imports: [IonApp, MainComponent]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   servicesEn: { id: number; name: string }[] = [];
   servicesSv: { id: number; name: string }[] = [];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor(private specialistService: SpecialistService) {
 
+  constructor(
+    private specialistService: SpecialistService,
+    private platform: Platform,
+    private router: Router,
+    private zone: NgZone,
+    private alertController: AlertController
+  ) {
+    this.initializeApp();
   }
 
-
+  initializeApp() {
+    this.platform.ready().then(() => {
+      this.listenToNotificationClick();
+      this.listenToNotificationReceived();
+    });
+  }
 
   ngOnInit(): void {
     this.specialistService.getAllServicesAndSaveInTheLocalStorage().subscribe({
-      next: (services) => {
+      next: () => {
         this.servicesEn = this.specialistService.getServicesByLanguage('en');
         this.servicesSv = this.specialistService.getServicesByLanguage('sv');
-        // console.log('✅ servicesEn:', this.servicesEn);
-        // console.log('✅ servicesSv:', this.servicesSv);
+        // console.log('✅ services loaded');
       },
       error: (err) => {
         console.error('❌ Failed to fetch and store services:', err);
       }
+    });
+  }
+
+  // 📩 هندل کلیک روی نوتیف در حالت background یا kill
+  listenToNotificationClick() {
+    if (Capacitor.getPlatform() === 'web') return;
+
+    PushNotifications.addListener('pushNotificationActionPerformed', (notification: ActionPerformed) => {
+      const data = notification.notification?.data;
+      const appointmentId = data?.Appointment_Id;
+
+      if (appointmentId) {
+        const url = `/appointments/details/${appointmentId}`;
+        this.zone.run(() => {
+          this.router.navigateByUrl(url);
+        });
+      }
+    });
+  }
+
+  // 🔔 هندل دریافت نوتیف در foreground
+  listenToNotificationReceived() {
+    if (Capacitor.getPlatform() === 'web') return;
+
+    PushNotifications.addListener('pushNotificationReceived', async (notification: PushNotificationSchema) => {
+      const data = notification.data;
+      const appointmentId = data?.Appointment_Id;
+
+      const alert = await this.alertController.create({
+        header: notification.title || 'Notification',
+        message: notification.body || '',
+        buttons: [
+          {
+            text: 'See more',
+            handler: () => {
+              if (appointmentId) {
+                const url = `/appointments/details/${appointmentId}`;
+                this.zone.run(() => {
+                  this.router.navigateByUrl(url);
+                });
+              }
+            }
+          },
+          {
+            text: 'Close',
+            role: 'cancel'
+          }
+        ]
+      });
+
+      await alert.present();
     });
   }
 }

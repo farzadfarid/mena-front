@@ -37,6 +37,8 @@ export class SpecialistsComponent implements OnInit {
   viewMode: 'list' | 'grid' = 'list';
   searchHeight: number = 170;
   showNoFoundMessage: boolean = false;
+  lastServiceIds: number[] = [];
+  lastAtDates: string[] = [];
   constructor(private message: ToastService, private specialistService: SpecialistService, private router: Router) {
     addIcons({ gridOutline, listOutline, searchOutline });
 
@@ -65,6 +67,8 @@ export class SpecialistsComponent implements OnInit {
   }
 
   onSearch(event: { serviceIds: number[]; atDates: string[] }) {
+    this.lastServiceIds = event.serviceIds;
+    this.lastAtDates = event.atDates;
     console.log(event.serviceIds, event.atDates);
     this.isLoading = true;
     this.hasSearched = true;
@@ -121,8 +125,14 @@ export class SpecialistsComponent implements OnInit {
 
 
   viewSpecialist(id: number) {
-    this.router.navigate(['/specialist-detail', id]);
+    this.router.navigate(['/specialist-detail', id], {
+      queryParams: {
+        serviceIds: this.lastServiceIds?.join(','),  // ذخیره شده از onSearch
+        atDates: this.lastAtDates?.join(',')
+      }
+    });
   }
+
 
 
 }

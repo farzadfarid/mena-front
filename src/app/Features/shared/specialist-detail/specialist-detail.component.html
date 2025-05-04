@@ -62,12 +62,12 @@
       </ion-list>
 
       <div class="button-group">
-        <!-- <ion-button expand="block" fill="solid" color="primary">
+        <!-- <ion-button expand="block" fill="solid" color="primary"> 
           <ion-icon name="calendar-outline" slot="start"></ion-icon>
           Access Calendar
         </ion-button> -->
 
-        <ion-button expand="block" fill="outline" color="success">
+        <ion-button expand="block" fill="outline" color="success" (click)="onBookClick()">
           <ion-icon name="person-add-outline" slot="start"></ion-icon>
           {{ "Book" | translate }}
         </ion-button>

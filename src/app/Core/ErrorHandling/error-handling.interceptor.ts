@@ -11,27 +11,27 @@ import { ToastService } from '../Services/toast.service';
 
 
 
-@Injectable()
-export class ErrorHandlingInterceptor implements HttpInterceptor {
+// @Injectable()
+// export class ErrorHandlingInterceptor implements HttpInterceptor {
 
-  constructor(private messageService: ToastService) { }
+//   constructor(private messageService: ToastService) { }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(request).pipe(
-      catchError((error: HttpErrorResponse) => {
-        let errorMessage = 'An unknown error occurred';
-        if (error.error instanceof ErrorEvent) {
-          // Client-side error
-          errorMessage = `Error: ${error.error.message}`;
-          this.messageService.showError(errorMessage);
-        } else {
-          // Server-side error
-          errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-          this.messageService.showError(errorMessage);
-        }
+//   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+//     return next.handle(request).pipe(
+//       catchError((error: HttpErrorResponse) => {
+//         let errorMessage = 'An unknown error occurred';
+//         if (error.error instanceof ErrorEvent) {
+//           // Client-side error
+//           errorMessage = `Error: ${error.error.message}`;
+//           this.messageService.showError(errorMessage);
+//         } else {
+//           // Server-side error
+//           errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+//           this.messageService.showError(errorMessage);
+//         }
 
-        return throwError(error);
-      })
-    );
-  }
-}
+//         return throwError(error);
+//       })
+//     );
+//   }
+// }

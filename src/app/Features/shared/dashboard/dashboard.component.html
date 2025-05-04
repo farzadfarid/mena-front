@@ -1,45 +1,103 @@
+@if(isLoading){
+  <app-loading></app-loading>
+}
 <div class="ionMarginTop"></div>
 <ion-content class="ion-padding">
-  <div class="dashboard-container">
-    <ion-card (click)="navigateTo('/users')">
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon name="people" class="dashboard-icon"></ion-icon>
-          Users
-        </ion-card-title>
-      </ion-card-header>
-    </ion-card>
-    <ion-card (click)="navigateTo('/specialists')">
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon name="construct" class="dashboard-icon"></ion-icon>
-          Specialists
-        </ion-card-title>
-      </ion-card-header>
-    </ion-card>
-    <ion-card (click)="navigateTo('/bookings')">
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon name="calendar" class="dashboard-icon"></ion-icon>
-          Bookings
-        </ion-card-title>
-      </ion-card-header>
-    </ion-card>
-    <ion-card (click)="navigateTo('/off-days-manager')">
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon name="calendar-outline" class="dashboard-icon"></ion-icon>
-          Off Days Manager
-        </ion-card-title>
-      </ion-card-header>
-    </ion-card>
-    <ion-card (click)="navigateTo('/settings')">
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon name="settings" class="dashboard-icon"></ion-icon>
-          Settings
-        </ion-card-title>
-      </ion-card-header>
-    </ion-card>
+  <div class="modern-dashboard">
+    @if(authService.hasRole('admin')||authService.hasRole('superadmin')){
+      <div class="dashboard-item" (click)="navigateTo('/users')">
+        <div class="dashboard-icon-circle">
+          <ion-icon name="people"></ion-icon>
+        </div>
+        <div class="dashboard-label">Users</div>
+      </div>
+    }
+
+    @if(authService.hasRole('specialist')){
+
+      <div class="dashboard-item" (click)="navigateTo('/requests')">
+        <div class="dashboard-icon-circle">
+          <span class="badge" *ngIf="serviceCounts[1] !== undefined">{{ serviceCounts[1] }}</span>
+          <ion-icon name="help-outline"></ion-icon>
+        </div>
+        <div class="dashboard-label">Requests</div>
+      </div>
+
+      <div class="dashboard-item" (click)="navigateTo('/todo')">
+        <div class="dashboard-icon-circle">
+          <span class="badge" *ngIf="serviceCounts[2] !== undefined">{{ serviceCounts[2] }}</span>
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+        <div class="dashboard-label">To do</div>
+      </div>
+
+      <div class="dashboard-item" (click)="navigateTo('/completed')">
+        <div class="dashboard-icon-circle">
+          <span class="badge" *ngIf="serviceCounts[6] !== undefined">{{ serviceCounts[6] }}</span>
+          <ion-icon name="checkmark-done-outline"></ion-icon>
+        </div>
+        <div class="dashboard-label">Completed</div>
+      </div>
+      <div class="dashboard-item" (click)="navigateTo('/archive')">
+        <div class="dashboard-icon-circle">
+          <span class="badge" *ngIf="getArchiveCount() > 0">{{ getArchiveCount() }}</span>
+          <ion-icon name="archive"></ion-icon>
+        </div>
+        <div class="dashboard-label">Archive</div>
+      </div>
+      
+
+      <div class="dashboard-item" (click)="navigateTo('/off-days-manager')">
+        <div class="dashboard-icon-circle">
+          <ion-icon name="calendar"></ion-icon>
+        </div>
+        <div class="dashboard-label">Off Days</div>
+      </div>
+    }
+
+    @if(authService.hasRole('legalcustomer')||authService.hasRole('realcustomer')){ 
+      <div class="dashboard-item" (click)="navigateTo('/requests-customer')">
+        <div class="dashboard-icon-circle">
+          <span class="badge" *ngIf="serviceCountsCustomer[1] !== undefined">{{ serviceCountsCustomer[1] }}</span>
+          <ion-icon name="help-outline"></ion-icon>
+        </div>
+        <div class="dashboard-label">Requests</div>
+      </div>
+
+      <div class="dashboard-item" (click)="navigateTo('/todo-customer')">
+        <div class="dashboard-icon-circle">
+          <span class="badge" *ngIf="serviceCountsCustomer[2] !== undefined">{{ serviceCountsCustomer[2] }}</span>
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+        <div class="dashboard-label">To do</div>
+      </div>
+
+      <div class="dashboard-item" (click)="navigateTo('/completed-customer')">
+        <div class="dashboard-icon-circle">
+          <span class="badge" *ngIf="serviceCountsCustomer[6] !== undefined">{{ serviceCountsCustomer[6] }}</span>
+          <ion-icon name="checkmark-done-outline"></ion-icon>
+        </div>
+        <div class="dashboard-label">Completed</div>
+      </div>
+      <div class="dashboard-item" (click)="navigateTo('/archive-customer')">
+        <div class="dashboard-icon-circle">
+          <span class="badge" *ngIf="getArchiveCountCustomer() > 0">{{ getArchiveCountCustomer() }}</span>
+          <ion-icon name="archive"></ion-icon>
+        </div>
+        <div class="dashboard-label">Archive</div>
+      </div>
+    }
+
+
+
+    @if(authService.hasRole('specialist')||authService.hasRole('legalcustomer')||authService.hasRole('realcustomer')){
+      <div class="dashboard-item" (click)="navigateTo('/settings')">
+        <div class="dashboard-icon-circle">
+          <ion-icon name="settings"></ion-icon>
+        </div>
+        <div class="dashboard-label">Settings</div>
+      </div>
+    }
+
   </div>
 </ion-content>

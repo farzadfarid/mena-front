@@ -90,7 +90,6 @@ export class LoginSpecialistComponent {
 
     try {
       await this.platform.ready();
-
       const permissionResult = await PushNotifications.requestPermissions();
       if (permissionResult.receive !== 'granted') {
         console.warn('[Push] Permission not granted');
@@ -102,20 +101,19 @@ export class LoginSpecialistComponent {
       PushNotifications.addListener('registration', (token: Token) => {
         console.log('🔐 FCM Token:', token.value);
         this.fcmToken = token.value;
-
-        this.notificationService.saveFcmToken(this.currentUserId, this.fcmToken).subscribe(() => {
+        this.notificationService.saveFcmToken(this.fcmToken).subscribe(() => {
           console.log('توکن ذخیره شد ✅');
         });
       });
 
       PushNotifications.addListener('pushNotificationReceived', (notification: PushNotificationSchema) => {
         console.log('📩 Push received:', notification);
-        alert(`${notification.title}\n${notification.body}`);
+        this.message.showInfo(`${notification.title}\n${notification.body}`);
       });
 
-      PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
-        console.log('🎯 Notification action performed:', notification);
-      });
+      // PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
+      //   console.log('🎯 Notification action performed:', notification);
+      // });
 
     } catch (error) {
       console.error('[Push] Error initializing push notifications:', error);

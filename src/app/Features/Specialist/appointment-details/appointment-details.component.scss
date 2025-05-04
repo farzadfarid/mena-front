@@ -1,0 +1,60 @@
+ion-card {
+    margin: 10px;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+}
+
+.info-chip {
+    height: 24px;
+    font-size: 12px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+}
+
+.info-icon {
+    font-size: 16px;
+    margin-inline-end: 6px;
+    vertical-align: middle;
+}
+
+.appointment-item {
+    position: relative;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: rgba(0, 0, 0, 0.1); // یه خط ملایم خاکستری
+    }
+}
+
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+
+ion-button {
+    --border-radius: 10px;
+}
+
+.notFound {
+    margin: 0 auto;
+    margin-top: 10px;
+    color: red;
+    text-align: center;
+}

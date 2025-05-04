@@ -1,0 +1,66 @@
+
+@if(isLoading){
+  <app-loading></app-loading>
+}
+<div class="ionMarginTop"></div>
+
+<ion-content fullscreen class="ion-padding">
+  <!-- 👇 رفرشر -->
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
+  <!-- محتوا -->
+  <ng-container *ngIf="!isLoading && appointment">
+    <ion-card class="appointment-card">
+      <ion-card-content>
+
+        <!-- 👤 نام مشتری -->
+        <div class="info-row">
+          <strong>
+            <ion-icon name="person-outline" class="info-icon"></ion-icon>
+            {{ 'Customer Name' | translate }}
+          </strong>
+          <ion-chip class="info-chip">
+            {{ appointment.customerFullName }}
+          </ion-chip>
+        </div>
+
+        <!-- 🛠️ نام سرویس -->
+        <div class="info-row">
+          <strong>
+            <ion-icon name="construct-outline" class="info-icon"></ion-icon>
+            {{ 'Service' | translate }}
+          </strong>
+          <ion-chip class="info-chip">
+            {{ appointment.parsedServiceName }}
+          </ion-chip>
+        </div>
+
+        <!-- 📅 تاریخ سرویس -->
+        <div class="info-row">
+          <strong>
+            <ion-icon name="calendar-outline" class="info-icon"></ion-icon>
+            {{ 'Date' | translate }}
+          </strong>
+          <ion-chip class="info-chip">
+            {{ appointment.serviceDate | date }}
+          </ion-chip>
+        </div>
+
+        <!-- 📌 وضعیت سرویس -->
+        <div class="info-row">
+          <strong>
+            <ion-icon name="alert-circle-outline" class="info-icon"></ion-icon>
+            {{ 'State' | translate }}
+          </strong>
+          <ion-chip color="primary" class="info-chip">
+            {{ service.getServiceAppointmentStateTranslationKey(appointment.state) | translate }}
+          </ion-chip>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ion-content>

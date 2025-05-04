@@ -1,0 +1,178 @@
+<div class="ionMarginTop"></div>
+<!-- <div class="ionMarginTop"></div> -->
+<ion-content fullscreen>
+  <!-- <div class="ion-text-start ion-margin-bottom ion-margin-start">
+    <ion-button size="small" fill="outline" (click)="toggleView()">
+      <ion-icon slot="icon-only" [name]="viewMode === 'list' ? 'grid-outline' : 'list-outline'"></ion-icon>
+    </ion-button>
+  </div> -->
+
+  <ion-refresher slot="fixed" (ionRefresh)="fetchAppointments($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- لودینگ -->
+  <ng-container *ngIf="isLoading">
+    <app-loading></app-loading>
+  </ng-container>
+
+  <!-- وقتی لیست خالیه -->
+  <ng-container *ngIf="!isLoading && appointments.length === 0">
+      <div class="ion-padding notFound">No appointments found.</div>
+  </ng-container>
+
+  <!-- وقتی داده وجود داره -->
+  <ng-container *ngIf="!isLoading && appointments.length > 0">
+    <ng-container *ngIf="viewMode === 'list'">
+      <ion-list>
+        <ion-item *ngFor="let item of appointments" class="appointment-item" lines="none">
+          <ion-label class="ion-text-wrap">
+      
+            <!-- نام مشتری -->
+            <div class="info-row">
+              <strong>
+                <ion-icon name="person-outline" class="info-icon"></ion-icon>
+                {{ 'Customer Name' | translate }}
+              </strong>
+              <ion-chip class="info-chip">
+                {{ item.customerFullName }}
+              </ion-chip>
+            </div>
+      
+            <!-- نام سرویس -->
+            <div class="info-row">
+              <strong>
+                <ion-icon name="construct-outline" class="info-icon"></ion-icon>
+                {{ 'Service' | translate }}
+              </strong>
+              <ion-chip  class="info-chip">
+                {{ item.parsedServiceName }}
+              </ion-chip>
+            </div>
+      
+            <!-- تاریخ -->
+            <div class="info-row">
+              <strong>
+                <ion-icon name="calendar-outline" class="info-icon"></ion-icon>
+                {{ 'Date' | translate }}
+              </strong>
+              <ion-chip  class="info-chip">
+                {{ item.serviceDate | date }}
+              </ion-chip>
+            </div>
+      
+            <!-- وضعیت -->
+            <div class="info-row">
+              <strong>
+                <ion-icon name="alert-circle-outline" class="info-icon"></ion-icon>
+                {{ 'State' | translate }}
+              </strong>
+              <ion-chip color="success" class="info-chip">
+                {{ serviceAppointmentService.getServiceAppointmentStateTranslationKey(item.state) | translate }}
+              </ion-chip>
+            </div>
+
+            <div *ngIf="item.state === 2" class="action-buttons">
+              <ion-button color="danger" size="small" fill="solid" (click)="cancelAppointment(item)">
+                <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+                {{ 'Cancel' | translate }}
+              </ion-button>
+            </div>
+
+            <!-- <div *ngIf="item.state === 1" class="action-buttons">
+              <ion-button color="success" size="small" fill="solid" (click)="confirmAppointment(item)">
+                <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+                {{ 'Confirm' | translate }}
+              </ion-button>
+      
+              <ion-button color="danger" size="small" fill="outline" (click)="rejectAppointment(item)">
+                <ion-icon slot="start" name="close-circle-outline"></ion-icon>
+                {{ 'Reject' | translate }}
+              </ion-button>
+            </div> -->
+      
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      
+      
+    </ng-container>
+
+    <ng-container *ngIf="viewMode === 'grid'">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-md="6" *ngFor="let item of appointments">
+            <ion-card class="appointment-card">
+              <ion-card-content>
+      
+                <!-- 👤 نام مشتری -->
+                <div class="info-row">
+                  <strong>
+                    <ion-icon name="person-outline" class="info-icon"></ion-icon>
+                    {{ 'Customer Name' | translate }}
+                  </strong>
+                  <ion-chip class="info-chip">
+                    {{ item.customerFullName }}
+                  </ion-chip>
+                </div>
+      
+                <!-- 🛠️ سرویس -->
+                <div class="info-row">
+                  <strong>
+                    <ion-icon name="construct-outline" class="info-icon"></ion-icon>
+                    {{ 'Service' | translate }}
+                  </strong>
+                  <ion-chip  class="info-chip">
+                    {{ item.parsedServiceName }}
+                  </ion-chip>
+                </div>
+      
+                <!-- 📅 تاریخ -->
+                <div class="info-row">
+                  <strong>
+                    <ion-icon name="calendar-outline" class="info-icon"></ion-icon>
+                    {{ 'Date' | translate }}
+                  </strong>
+                  <ion-chip  class="info-chip">
+                    {{ item.serviceDate !== '0001-01-01T00:00:00' ? (item.serviceDate | date) : '-' }}
+                  </ion-chip>
+                </div>
+      
+                <!-- 📌 وضعیت -->
+                <div class="info-row">
+                  <strong>
+                    <ion-icon name="alert-circle-outline" class="info-icon"></ion-icon>
+                    {{ 'State' | translate }}
+                  </strong>
+                  <ion-chip color="success" class="info-chip">
+                    {{ serviceAppointmentService.getServiceAppointmentStateTranslationKey(item.state) | translate }}
+                  </ion-chip>
+                </div>
+                <div *ngIf="item.state === 2" class="action-buttons">
+                  <ion-button color="danger" size="small" fill="solid" (click)="cancelAppointment(item)">
+                    <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+                    {{ 'Cancel' | translate }}
+                  </ion-button>
+                </div>
+
+                <!-- <div *ngIf="item.state === 1" class="action-buttons">
+                  <ion-button color="success" size="small" fill="solid" (click)="confirmAppointment(item)">
+                    <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+                    {{ 'Confirm' | translate }}
+                  </ion-button>
+      
+                  <ion-button color="danger" size="small" fill="outline" (click)="rejectAppointment(item)">
+                    <ion-icon slot="start" name="close-circle-outline"></ion-icon>
+                    {{ 'Reject' | translate }}
+                  </ion-button>
+                </div> -->
+
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      
+    </ng-container>
+  </ng-container>
+</ion-content>

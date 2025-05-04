@@ -20,12 +20,5 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
     });
   }
 
-  return next(req).pipe(
-    tap({
-      next: () => { },
-      error: (error) => {
-        message.showError(error.message);
-      }
-    })
-  );
+  return next(req);
 };

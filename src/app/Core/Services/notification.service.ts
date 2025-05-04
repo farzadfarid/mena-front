@@ -19,9 +19,8 @@ export class NotificationService {
     });
   }
 
-  saveFcmToken(userId: number, token: string) {
+  saveFcmToken(token: string) {
     return this.http.post(`${this.apiUrl}notifications/save-token`, {
-      userId,
       token
     });
   }

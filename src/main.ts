@@ -14,28 +14,29 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { importProvidersFrom } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { LanguageInterceptor } from './app/Core/Interceptores/LanguageInterceptor/language.interceptor';
+import { tokenInterceptor } from './app/Core/Interceptores/TokenInterceptor/token.interceptor';
 
 
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
-
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    importProvidersFrom(
-      // اگر HttpClientModule یا دیگر ماژول‌ها داری
-    ),
-
 
     provideIonicAngular(),
     provideToastr(),
     provideAnimations(),
+
     provideRouter(routes, withPreloading(PreloadAllModules)),
-    provideHttpClient(withInterceptorsFromDi()), // Enable interceptors
-    { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true }, // Fake backend
-    provideHttpClient(withInterceptors([LanguageInterceptor])),
+
+    provideHttpClient(
+      withInterceptorsFromDi(),
+      withInterceptors([LanguageInterceptor, tokenInterceptor])
+    ),
+
+    { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true },
 
     importProvidersFrom(
       TranslateModule.forRoot({
