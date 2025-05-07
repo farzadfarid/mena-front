@@ -13,7 +13,9 @@ import {
   personCircleOutline, calendarOutline,
   buildOutline,
   helpOutline,
-  checkmarkOutline
+  checkmarkOutline,
+  homeOutline,
+  homeSharp
 } from 'ionicons/icons';
 
 import { sunnyOutline, moonOutline } from 'ionicons/icons';
@@ -39,7 +41,7 @@ import { RolesEnum } from 'src/app/Core/enums/roles.enum';
 export class MenuComponent implements OnInit {
   userInfo: any;
   constructor(public authService: AuthService, private router: Router) {
-    addIcons({ helpOutline, checkmarkOutline, buildOutline, personCircleOutline, calendarOutline, logInOutline, listOutline, listSharp, list, logIn, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, sunnyOutline, moonOutline });
+    addIcons({ helpOutline, checkmarkOutline, homeOutline, homeSharp, buildOutline, personCircleOutline, calendarOutline, logInOutline, listOutline, listSharp, list, logIn, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, sunnyOutline, moonOutline });
   }
 
   isLoggedIn(): boolean {

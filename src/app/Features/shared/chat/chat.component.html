@@ -1,0 +1,18 @@
+<div class="ionMarginTop"></div>
+<div class="chat-container">
+  <h4>{{"Chat with" | translate}} {{ receiverName }}</h4>
+  <div class="seprate"></div>
+  <div class="messages">
+    <div *ngFor="let msg of messages" class="message" [ngClass]="{'own': msg.sender?.uid !== receiverId}">
+      <div class="bubble">{{ msg.text }}</div>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <input
+      [(ngModel)]="newMessage"
+      [attr.placeholder]="'Type your message...' | translate"
+      (keyup.enter)="sendMessage()" />
+    <button (click)="sendMessage()">{{"Send" | translate}}</button>
+  </div>
+</div>

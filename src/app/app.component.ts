@@ -6,6 +6,7 @@ import { Platform, AlertController } from '@ionic/angular';
 import { SpecialistService } from './Core/Services/specialist.service';
 import { MainComponent } from "./Layout/main/main.component";
 import { IonApp } from "@ionic/angular/standalone";
+import { CometChat } from '@cometchat-pro/chat';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit {
     private alertController: AlertController
   ) {
     this.initializeApp();
+    this.initializeCometChat();
   }
 
   initializeApp() {
@@ -98,4 +100,27 @@ export class AppComponent implements OnInit {
       await alert.present();
     });
   }
+
+
+
+  initializeCometChat() {
+    const appID = "2748703fb38b27a7";
+    const region = "eu";
+
+    const appSettings = new CometChat.AppSettingsBuilder()
+      .subscribePresenceForAllUsers()
+      .setRegion(region)
+      .build();
+
+    CometChat.init(appID, appSettings).then(
+      () => {
+        console.log("✅ CometChat initialized successfully");
+      },
+      (error) => {
+        console.error("❌ CometChat initialization failed", error);
+      }
+    );
+  }
+
+
 }

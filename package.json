@@ -31,6 +31,7 @@
     "@capacitor/ios": "5.2.3",
     "@capacitor/keyboard": "5.0.6",
     "@capacitor/push-notifications": "5.0.6",
+    "@cometchat-pro/chat": "^3.0.13",
     "@ionic/angular": "^8.0.0",
     "@ngx-translate/core": "^16.0.4",
     "@ngx-translate/http-loader": "^16.0.1",

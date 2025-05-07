@@ -8,7 +8,7 @@ import { ToastService } from 'src/app/Core/Services/toast.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from 'src/app/Core/Services/auth.service';
 import { LoadingComponent } from "../../../Core/loading/loading.component";
-import { RolesEnum } from 'src/app/Core/enums/roles.enum';
+
 import { NotificationService } from 'src/app/Core/Services/notification.service';
 import {
   PushNotifications,
@@ -49,6 +49,12 @@ export class LoginCompanyPersonalComponent {
         if (res.data !== '') {
           const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
           this.initPushNotifications();
+
+
+
+
+
+
           this.router.navigate(['/dashboard']);
         }
       })

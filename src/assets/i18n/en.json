@@ -131,5 +131,13 @@
     "To do": "To do",
     "Requests": "Requests",
     "Completed": "Completed",
-    "Archive": "Archive"
+    "Archive": "Archive",
+    "auth": {
+        "please_login": "Please log in to continue.",
+        "not_authorized": "You are not authorized to access this section."
+    },
+    "Chat": "Chat",
+    "Chat with": "Chat with",
+    "Send": "Send",
+    "Type your message...": "Type your message..."
 }

@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router';
+import { shareGuard } from './Core/guards/share.guard';
+
+
 
 export const routes: Routes = [
   {
@@ -9,7 +12,7 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () => import('./Features/home/home.component').then(m => m.HomeComponent),
-    data: { title: 'Sign In' }
+    data: { title: 'APP_TITLE' }
   },
   {
     path: 'login-companyPersonal',
@@ -48,47 +51,64 @@ export const routes: Routes = [
     loadComponent: () => import('./Features/Customers/select-company-or-personal/select-company-or-personal.component').then(m => m.SelectCompanyOrPersonalComponent),
     data: { title: 'Sign In or Sign Up' }
   },
+
   {
     path: 'specialists',
     loadComponent: () => import('./Features/shared/specialists/specialists.component').then(m => m.SpecialistsComponent),
-    data: { title: 'Service Appointment' }
+    data: { title: 'Specialists' }
   },
+
+
+
   {
-    path: 'specialist-detail/:id',
-    loadComponent: () => import('./Features/shared/specialist-detail/specialist-detail.component').then(m => m.SpecialistDetailComponent),
-    data: { title: 'Specialist Detail' }
+    path: 'chat',
+    loadComponent: () => import('./Features/chat-room/chat-room.component').then(m => m.ChatRoomComponent),
+    data: { title: 'Chat' }
   },
+
+
+
 
 
   {
     path: 'appointments/details/:id',
+    canActivate: [shareGuard],
     loadComponent: () => import('./Features/Specialist/appointment-details/appointment-details.component').then(m => m.AppointmentDetailsComponent),
-    data: { title: 'Appointments details' }
+    data: { title: 'Appointments details', roles: ['specialist'] },
   },
-
-
   {
     path: 'todo',
+    canActivate: [shareGuard],
     loadComponent: () => import('./Features/Specialist/States/to-do/to-do.component').then(m => m.ToDoComponent),
-    data: { title: 'To do' }
+    data: { title: 'To do', roles: ['specialist'] },
   },
-
   {
     path: 'requests',
+    canActivate: [shareGuard],
     loadComponent: () => import('./Features/Specialist/States/requests/requests.component').then(m => m.RequestsComponent),
-    data: { title: 'Requests' }
+    data: { title: 'Requests', roles: ['specialist'] },
   },
-
   {
     path: 'completed',
+    canActivate: [shareGuard],
     loadComponent: () => import('./Features/Specialist/States/completed/completed.component').then(m => m.CompletedComponent),
-    data: { title: 'Completed' }
+    data: { title: 'Completed', roles: ['specialist'] },
   },
   {
     path: 'archive',
+    canActivate: [shareGuard],
     loadComponent: () => import('./Features/Specialist/States/archive-services/archive-services.component').then(m => m.ArchiveServicesComponent),
-    data: { title: 'Archive' }
+    data: { title: 'Archive', roles: ['specialist'] },
   },
+  {
+    path: 'off-days-manager',
+    canActivate: [shareGuard],
+    loadComponent: () => import('./Features/Specialist/off-days-manager/off-days-manager.component').then(m => m.OffDaysManagerComponent),
+    data: { title: 'Off Days Manager', roles: ['specialist'] }
+  },
+
+
+
 
 
 
@@ -96,25 +116,27 @@ export const routes: Routes = [
 
   {
     path: 'todo-customer',
+    canActivate: [shareGuard],
     loadComponent: () => import('./Features/Customers/States/to-do/to-do.component').then(m => m.ToDoComponent),
-    data: { title: 'To do' }
+    data: { title: 'To do', roles: ['realcustomer', 'legalcustomer'] },
   },
-
   {
     path: 'requests-customer',
+    canActivate: [shareGuard],
     loadComponent: () => import('./Features/Customers/States/requests/requests.component').then(m => m.RequestsComponent),
-    data: { title: 'Requests' }
+    data: { title: 'Requests', roles: ['realcustomer', 'legalcustomer'] },
   },
-
   {
     path: 'completed-customer',
+    canActivate: [shareGuard],
     loadComponent: () => import('./Features/Customers/States/completed/completed.component').then(m => m.CompletedComponent),
-    data: { title: 'Completed' }
+    data: { title: 'Completed', roles: ['realcustomer', 'legalcustomer'] },
   },
   {
     path: 'archive-customer',
+    canActivate: [shareGuard],
     loadComponent: () => import('./Features/Customers/States/archive-services/archive-services.component').then(m => m.ArchiveServicesComponent),
-    data: { title: 'Archive' }
+    data: { title: 'Archive', roles: ['realcustomer', 'legalcustomer'] },
   },
 
 
@@ -125,32 +147,32 @@ export const routes: Routes = [
 
   {
     path: 'dashboard',
+    canActivate: [shareGuard],
     loadComponent: () => import('./Features/shared/dashboard/dashboard.component').then(m => m.DashboardComponent),
-    data: { title: 'Dashboard' }
+    data: { title: 'Dashboard', roles: ['specialist', 'realcustomer', 'legalcustomer'] },
   },
   {
     path: 'settings',
+    canActivate: [shareGuard],
     loadComponent: () => import('./Features/shared/settings/settings.component').then(m => m.SettingsComponent),
-    data: { title: 'Settings' }
+    data: { title: 'Settings', roles: ['specialist', 'realcustomer', 'legalcustomer'] },
   },
   {
     path: 'changePassword',
+    canActivate: [shareGuard],
     loadComponent: () => import('./Features/shared/change-password/change-password.component').then(m => m.ChangePasswordComponent),
-    data: { title: 'Change Password' }
+    data: { title: 'Change Password', roles: ['specialist', 'realcustomer', 'legalcustomer'] },
   },
   {
     path: 'deleteAccount',
+    canActivate: [shareGuard],
     loadComponent: () => import('./Features/shared/delete-account/delete-account.component').then(m => m.DeleteAccountComponent),
-    data: { title: 'Delete Account' }
+    data: { title: 'Delete Account', roles: ['specialist', 'realcustomer', 'legalcustomer'] },
   },
 
 
-  //specialist account
-  {
-    path: 'off-days-manager',
-    loadComponent: () => import('./Features/Specialist/off-days-manager/off-days-manager.component').then(m => m.OffDaysManagerComponent),
-    data: { title: 'Off Days Manager' }
-  },
+
+
 
   {
     path: '**',

@@ -71,6 +71,8 @@ export class LoginSpecialistComponent {
         this.initPushNotifications();
 
         if (userInfo.role === RolesEnum[RolesEnum.specialist]) {
+
+
           this.router.navigate(['/dashboard']);
         }
       }

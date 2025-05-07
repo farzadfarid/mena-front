@@ -19,7 +19,7 @@ import { LoadingComponent } from "../../../Core/loading/loading.component";
     IonContent,
     IonCard,
     IonCardContent,
-    IonSpinner,
+
     TranslateModule, LoadingComponent]
 })
 export class AppointmentDetailsComponent implements OnInit {

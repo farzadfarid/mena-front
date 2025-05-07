@@ -7,7 +7,10 @@ import {
   searchOutline,
   notificationsOutline,
   settingsOutline, playCircle, radio, library,
-  search, arrowBack
+  search, arrowBack,
+  logoWechat,
+  home,
+  settings
 } from 'ionicons/icons';
 
 import { addIcons } from 'ionicons';
@@ -22,6 +25,7 @@ import { App } from '@capacitor/app';
 import { Location } from '@angular/common';
 import { IonSplitPane, IonHeader, IonToolbar, IonMenuButton, IonButtons, IonTitle, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from "@ionic/angular/standalone";
 import { MenuController } from '@ionic/angular';
+import { AuthService } from 'src/app/Core/Services/auth.service';
 @Component({
   selector: 'app-main-layout',
   templateUrl: './main.component.html',
@@ -43,7 +47,8 @@ export class MainComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     public titleService: Title,
     private platform: Platform, private location: Location,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+    public authService: AuthService
   ) {
 
     this.initializeApp();
@@ -76,7 +81,7 @@ export class MainComponent implements OnInit, OnDestroy {
         }
       });
 
-    addIcons({ arrowBack, homeOutline, searchOutline, notificationsOutline, settingsOutline, playCircle, radio, library, search });
+    addIcons({ logoWechat, arrowBack, home, search, settings, playCircle, radio, library });
     const savedLanguage = localStorage.getItem('selectedLanguage');
     if (savedLanguage) {
       this.selectedLanguage = savedLanguage;
@@ -155,6 +160,13 @@ export class MainComponent implements OnInit, OnDestroy {
 
   homePage() {
     this.router.navigateByUrl('/home');
+  }
+  chat() {
+    this.router.navigateByUrl('/chat');
+
+  }
+  specialists() {
+    this.router.navigateByUrl('/specialists');
   }
   goSettingPage() {
     this.router.navigateByUrl('/settings');
