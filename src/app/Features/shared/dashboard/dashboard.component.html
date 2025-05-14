@@ -3,6 +3,12 @@
 }
 <div class="ionMarginTop"></div>
 <ion-content class="ion-padding">
+
+  <ion-refresher slot="fixed" (ionRefresh)="loadCounts($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
   <div class="modern-dashboard">
     @if(authService.hasRole('admin')||authService.hasRole('superadmin')){
       <div class="dashboard-item" (click)="navigateTo('/users')">

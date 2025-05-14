@@ -42,7 +42,7 @@ export class AuthService {
     } catch (error) {
       console.error("Invalid token", error);
     }
-  }
+  } 
 
   userRealRegister(user: userRealRegisterModel): Observable<ApiResponse<userRealRegisterModel>> {
     const headers = new HttpHeaders({

@@ -4,4 +4,6 @@ export interface ServiceAppointmentModel {
     state: number;
     customerFullName: string;
     serviceNameJson: string;
+    specialistFullName: string;
+
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CustomerServicesComponent } from "../../../../Core/Components/customer-services/customer-services.component";
 
 @Component({
@@ -7,10 +7,8 @@ import { CustomerServicesComponent } from "../../../../Core/Components/customer-
   styleUrls: ['./to-do.component.scss'],
   imports: [CustomerServicesComponent],
 })
-export class ToDoComponent implements OnInit {
+export class ToDoComponent {
   states = [2];
   constructor() { }
-
-  ngOnInit() { }
 
 }

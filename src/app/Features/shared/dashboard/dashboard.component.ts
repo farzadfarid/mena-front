@@ -56,7 +56,12 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.loadCounts();
   }
-  loadCounts() {
+  ionViewWillEnter(): void {
+    this.loadCounts();
+  }
+
+
+  loadCounts(event?: any) {
     this.isLoading = true;
     const states = [
       ServiceAppointmentStateCode.New,
@@ -69,6 +74,7 @@ export class DashboardComponent implements OnInit {
 
     this.serviceAppointmentService.getServiceAppointmentCounts(states).subscribe(response => {
       this.isLoading = false;
+      if (event) event.target.complete();
       this.serviceCounts = {};
       for (const item of response.data) {
         this.serviceCounts[item.state] = item.count;
@@ -79,6 +85,7 @@ export class DashboardComponent implements OnInit {
 
     this.serviceAppointmentCustomer.getServiceAppointmentCounts(states).subscribe(response => {
       this.isLoading = false;
+      if (event) event.target.complete();
       this.serviceCountsCustomer = {};
       for (const item of response.data) {
         this.serviceCountsCustomer[item.state] = item.count;

@@ -290,9 +290,10 @@ export class RegisterProfileComponent {
 
         this.specialistService.registerSpecialist(formData).subscribe((res) => {
           // if (res.responseCode == 200) {
+          console.log('resssssss', res)
           this.isLoading = false;
           this.message.showSuccess("Specialist registered successfully");
-          this.route.navigate(['/dashboard']);
+          this.route.navigate(['/login-specialist']);
           // }
         });
       } else {

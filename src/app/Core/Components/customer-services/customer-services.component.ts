@@ -20,10 +20,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { LoadingComponent } from "../../../Core/loading/loading.component";
 import { ExtendedServiceAppointmentModel } from 'src/app/Core/Models/Specialists/ExtendedServiceAppointment.model';
 import { addIcons } from 'ionicons';
-import { gridOutline, listOutline, personOutline, constructOutline, calendarOutline, alertCircleOutline, checkmarkCircleOutline, closeCircleOutline } from 'ionicons/icons';
+import { gridOutline, listOutline, personOutline, constructOutline, calendarOutline, alertCircleOutline, checkmarkCircleOutline, closeCircleOutline, logoWechat } from 'ionicons/icons';
 import { ToastService } from 'src/app/Core/Services/toast.service';
 import { AlertController } from '@ionic/angular';
 import { CustomerService } from '../../Services/customer.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-services',
@@ -59,8 +60,8 @@ export class CustomerServicesComponent implements OnInit {
   isLoading = false;
   appointments: ExtendedServiceAppointmentModel[] = [];
 
-  constructor(public serviceAppointmentService: CustomerService, private message: ToastService, private alertController: AlertController) {
-    addIcons({ personOutline, constructOutline, calendarOutline, alertCircleOutline, checkmarkCircleOutline, closeCircleOutline, listOutline, gridOutline });
+  constructor(private router: Router, public serviceAppointmentService: CustomerService, private message: ToastService, private alertController: AlertController) {
+    addIcons({ logoWechat, personOutline, constructOutline, calendarOutline, alertCircleOutline, checkmarkCircleOutline, closeCircleOutline, listOutline, gridOutline });
   }
 
   ngOnInit(): void {
@@ -78,7 +79,7 @@ export class CustomerServicesComponent implements OnInit {
     this.serviceAppointmentService.getAppointmentsByState(this.states)
       .subscribe({
         next: (res) => {
-          console.log('res', res)
+          console.log('ressssssssssss', res)
           this.appointments = res?.data.map(a => ({
             ...a,
             parsedServiceName: this.getLocalizedServiceName(a.serviceNameJson, lang)
@@ -218,6 +219,13 @@ export class CustomerServicesComponent implements OnInit {
     });
 
     await alert.present();
+  }
+
+
+  chat(item: any) {
+    this.router.navigate(['/chat'], {
+      queryParams: { receiverId: item.specialistId, receiverName: item.specialistFullName, receiverRole: 'specialist' }
+    });
   }
 
 }

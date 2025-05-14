@@ -4,7 +4,7 @@ import { addIcons } from 'ionicons';
 import { logInOutline, personCircle } from 'ionicons/icons';
 import {
   IonButton, IonGrid, IonRow, IonCol,
-  IonContent, IonLabel, IonInput, IonItem, IonNote 
+  IonContent, IonLabel, IonInput, IonItem, IonNote
 } from '@ionic/angular/standalone';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ModalController } from '@ionic/angular';
@@ -17,6 +17,7 @@ import { ToastService } from 'src/app/Core/Services/toast.service';
 import { userRealRegisterModel } from 'src/app/Core/Models/User/realUser.model';
 import { LoadingComponent } from "../../../../Core/loading/loading.component";
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-register-personal',
   templateUrl: './register-personal.component.html',
@@ -32,7 +33,7 @@ export class RegisterPersonalComponent {
   isLoading = false;
   registerForm!: FormGroup<any>;
   langChangeSubscription!: Subscription;
-  constructor(private message: ToastService, private fb: FormBuilder, private modalCtrl: ModalController, private translate: TranslateService, private service: AuthService) {
+  constructor(private route: Router, private message: ToastService, private fb: FormBuilder, private modalCtrl: ModalController, private translate: TranslateService, private service: AuthService) {
     addIcons({ personCircle, logInOutline });
 
     this.registerForm = this.fb.group({
@@ -134,6 +135,7 @@ export class RegisterPersonalComponent {
         this.service.userRealRegister(model).subscribe(res => {
           this.isLoading = false;
           this.message.showSuccess("User Registered Successfully");
+          this.route.navigate(['/login-companyPersonal']);
         });
       } else {
         this.isLoading = false;

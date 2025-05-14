@@ -28,14 +28,14 @@
         <ion-item *ngFor="let item of appointments" class="appointment-item" lines="none">
           <ion-label class="ion-text-wrap">
       
-            <!-- نام مشتری -->
+            <!-- نام متخصص -->
             <div class="info-row">
               <strong>
                 <ion-icon name="person-outline" class="info-icon"></ion-icon>
-                {{ 'Customer Name' | translate }}
+                {{ 'Specialist Name' | translate }}
               </strong>
               <ion-chip class="info-chip">
-                {{ item.customerFullName }}
+                {{ item.specialistFullName }}
               </ion-chip>
             </div>
       
@@ -77,9 +77,13 @@
                 <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
                 {{ 'Cancel' | translate }}
               </ion-button>
+              <ion-button color="success" size="small" fill="solid" (click)="chat(item)">
+                <ion-icon slot="start" name="logo-wechat"></ion-icon>
+                {{ 'Chat' | translate }}
+              </ion-button>
             </div>
-
-            <!-- <div *ngIf="item.state === 1" class="action-buttons">
+ 
+            <!-- <div *ngIf="item.state === 1" class="action-buttons"> 
               <ion-button color="success" size="small" fill="solid" (click)="confirmAppointment(item)">
                 <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
                 {{ 'Confirm' | translate }}

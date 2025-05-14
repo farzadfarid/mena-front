@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatComponent } from "../shared/chat/chat.component";
 import { CometChat } from '@cometchat-pro/chat';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chat-room',
@@ -14,9 +15,17 @@ export class ChatRoomComponent implements OnInit {
   receiverName: any;
   receiverRole: any;
 
-  constructor() { }
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+    this.route.queryParams.subscribe(params => {
+      this.receiverId = params['receiverId'];
+      this.receiverName = params['receiverName'];
+      this.receiverRole = params['receiverRole'];
+    });
+
+
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
 
     // ✅ login کاربر فعلی با userInfo
@@ -34,16 +43,16 @@ export class ChatRoomComponent implements OnInit {
       );
     }
 
-    if (userInfo.role === 'realcustomer' || userInfo.role === 'legalcustomer') {
-      // مشتری هست، پس چت با متخصص
-      this.receiverId = '1030'; // ✅ Emma Johnson
-      this.receiverName = 'Emma Johnson';
-      this.receiverRole = 'specialist';
-    } else if (userInfo.role === 'specialist') {
-      // متخصص هست، چت با مشتری تستی
-      this.receiverId = '1007'; // ✅ Farzad MT
-      this.receiverName = 'Farzad MT';
-      this.receiverRole = 'realcustomer';
-    }
+    // if (userInfo.role === 'realcustomer' || userInfo.role === 'legalcustomer') {
+    //   // مشتری هست، پس چت با متخصص
+    //   this.receiverId = '1030'; // ✅ Emma Johnson
+    //   this.receiverName = 'Emma Johnson';
+    //   this.receiverRole = 'specialist';
+    // } else if (userInfo.role === 'specialist') { 
+    //   // متخصص هست، چت با مشتری تستی
+    //   this.receiverId = '1007'; // ✅ Farzad MT
+    //   this.receiverName = 'Farzad MT';
+    //   this.receiverRole = 'realcustomer'; 
+    // }
   }
 }

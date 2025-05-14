@@ -21,9 +21,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { LoadingComponent } from "../../../Core/loading/loading.component";
 import { ExtendedServiceAppointmentModel } from 'src/app/Core/Models/Specialists/ExtendedServiceAppointment.model';
 import { addIcons } from 'ionicons';
-import { gridOutline, listOutline, personOutline, constructOutline, calendarOutline, alertCircleOutline, checkmarkCircleOutline, closeCircleOutline } from 'ionicons/icons';
+import { gridOutline, listOutline, personOutline, constructOutline, calendarOutline, alertCircleOutline, checkmarkCircleOutline, closeCircleOutline, logoWechat } from 'ionicons/icons';
 import { ToastService } from 'src/app/Core/Services/toast.service';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-specialist-services',
@@ -51,7 +52,7 @@ import { AlertController } from '@ionic/angular';
 export class SpecialistServicesComponent implements OnInit {
 
   @Input() states: number[] = [1];
-  // @Output() confirm = new EventEmitter<void>();
+  // @Output() confirm = new EventEmitter<void>(); 
   // @Output() reject = new EventEmitter<void>();
 
 
@@ -59,8 +60,8 @@ export class SpecialistServicesComponent implements OnInit {
   isLoading = false;
   appointments: ExtendedServiceAppointmentModel[] = [];
 
-  constructor(public serviceAppointmentService: SpecialistService, private message: ToastService, private alertController: AlertController) {
-    addIcons({ personOutline, constructOutline, calendarOutline, alertCircleOutline, checkmarkCircleOutline, closeCircleOutline, listOutline, gridOutline });
+  constructor(private router: Router, public serviceAppointmentService: SpecialistService, private message: ToastService, private alertController: AlertController) {
+    addIcons({ logoWechat, personOutline, constructOutline, calendarOutline, alertCircleOutline, checkmarkCircleOutline, closeCircleOutline, listOutline, gridOutline });
   }
 
   ngOnInit(): void {
@@ -218,5 +219,10 @@ export class SpecialistServicesComponent implements OnInit {
     await alert.present();
   }
 
+  chat(item: any) {
+    this.router.navigate(['/chat'], {
+      queryParams: { receiverId: item.customerId, receiverName: item.customerFullName, receiverRole: item.customerType }
+    });
+  }
 
 }

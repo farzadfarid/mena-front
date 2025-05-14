@@ -37,10 +37,10 @@
           
 
           @if(authService.hasRole('specialist')||authService.hasRole('legalcustomer')||authService.hasRole('realcustomer')){
-              <ion-tab-button (click)="chat()">
+              <!-- <ion-tab-button (click)="chat()">
                 <ion-icon name="logo-wechat"></ion-icon>
-                <ion-label>{{ 'Chat' | translate }}</ion-label>
-              </ion-tab-button>
+                <ion-label>{{ 'Chat' | translate }}</ion-label> 
+              </ion-tab-button> -->
               
               <ion-tab-button tab="settings" (click)="goSettingPage()">
                 <ion-icon name="settings"></ion-icon>
